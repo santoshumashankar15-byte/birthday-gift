@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Noorzia! 🎁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Poppins:wght=300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0f0c20;
+            --accent-color: #ff7597;
+            --box-color: #e29578;
+            --box-lid-color: #dd7e5c;
+            --ribbon-color: #e63946;
+            --thread-color: #ff4d6d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #0f0c20, #15102a, #1a1a2e);
+            padding: 40px 20px;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* --- PINKY PROMISE MAP SECTION --- */
+        .map-section {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .map-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 150px;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+
+        .location-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+            width: 110px;
+        }
+
+        .finger-frame {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 117, 151, 0.5);
+            background: #221c3e;
+        }
+
+        .finger-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .location-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .country-name {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Connecting Thread Path */
+        .svg-thread-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .connecting-thread {
+            stroke: var(--thread-color);
+            stroke-width: 3;
+            stroke-linecap: round;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawThread 3.5s ease-in-out forwards;
+            filter: drop-shadow(0 0 6px var(--thread-color));
+        }
+
+        /* --- COUNTDOWN & CONTENT STYLES --- */
+        #countdown-section h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 117, 151, 0.5);
+        }
+
+        #countdown-section p {
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .timer {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            min-width: 68px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .time-box label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.5;
+            letter-spacing: 1px;
+        }
+
+        .gift-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        .gift-container.unlocked {
+            cursor: pointer;
+            opacity: 1;
+            filter: drop-shadow(0 0 20px rgba(255, 117, 151, 0.6));
+        }
+
+        .gift-box {
+            position: absolute;
+            bottom: 0; width: 160px; height: 130px;
+            background-color: var(--box-color);
+            left: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .gift-lid {
+            position: absolute;
+            bottom: 125px; width: 180px; height: 40px;
+            background-color: var(--box-lid-color);
+            left: 10px;
+            border-radius: 4px;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+
+        .gift-box::before, .gift-lid::before {
+            content: '';
+            position: absolute;
+            background-color: var(--ribbon-color);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 100%;
+        }
+
+        .gift-container.open .gift-lid {
+            transform: translateY(-80px) rotate(-20px);
+            opacity: 0;
+        }
+
+        .click-text {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            animation: pulse 1.5s infinite;
+            display: none;
+            font-weight: 600;
+        }
+
+        .items-container {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-top: -30px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .items-container.reveal {
+            display: grid;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .item-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 20px 5px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(255, 117, 151, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .item-icon {
+            font-size: 2.3rem;
+            margin-bottom: 8px;
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 8, 22, 0.96);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #191432;
+            padding: 25px;
+            border-radius: 24px;
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            border: 1px solid rgba(255, 117, 151, 0.3);
+            text-align: center;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px; right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            opacity: 0.7;
+            color: #fff;
+        }
+
+        .close-btn:hover { opacity: 1; }
+
+        /* Polaroid Layout */
+        .photo-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            margin-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 2px;
+            width: 90%;
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+        }
+
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid:nth-child(3) { transform: rotate(-1deg); }
+        .polaroid:nth-child(4) { transform: rotate(2deg); }
+        
+        .polaroid:hover { transform: scale(1.04) rotate(0deg); z-index: 10; }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        .letter-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #f0f0f0;
+            text-align: left;
+            white-space: pre-line;
+            font-weight: 300;
+        }
+
+        .letter-text span {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            display: block;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        @keyframes drawThread {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="stars-container"></div>
+
+    <div class="container">
+        
+        <div class="map-section">
+            <h3 style="font-size: 1.1rem; font-weight: 400; letter-spacing: 1px; color: var(--accent-color);">Cross-Border Pinky Promise</h3>
+            
+            <div class="map-container">
+                <div class="location-node">
+                    <div class="finger-frame">
+                        <img src="my-finger.jpg.jpg" alt="Santosh Pinky">
+                    </div>
+                    <div class="location-label">Santosh</div>
+                    <div class="country-name">🇮🇳 India</div>
+                </div>
+
+                <svg class="svg-thread-container" id="thread-svg">
+                    <path class="connecting-thread" d="M 90,65 C 150,-10 230,140 290,65" id="thread-path"/>
+                </svg>
+
+                <div class="location-node">
+                    <div class="finger-frame">
+                        <img src="her-finger.jpg.jpg" alt="Noorzia Pinky">
+                    </div>
+                    <div class="location-label">Noorzia</div>
+                    <div class="country-name">🇦🇫 Afghanistan</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="countdown-section">
+            <h1 id="header-text">Waiting For Midnight...</h1>
+            <p id="sub-text">Distance means nothing when someone means everything, Noorzia.</p>
+            
+            <div class="timer" id="timer-display">
+                <div class="time-box"><span id="days">00</span><label>Days</label></div>
+                <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+                <div class="time-box"><span id="mins">00</span><label>Mins</label></div>
+                <div class="time-box"><span id="secs">00</span><label>Secs</label></div>
+            </div>
+        </div>
+
+        <div class="gift-container" id="gift-box-container" onclick="openBox()">
+            <div class="gift-lid"></div>
+            <div class="gift-box"></div>
+        </div>
+        <div class="click-text" id="click-prompt">✨ CLICK TO UNBOX YOUR CARE PACKAGE ✨</div>
+
+        <div class="items-container" id="care-package-items">
+            <div class="item-card" onclick="openModal('gallery-modal')">
+                <div class="item-icon">📸</div>
+                <h3>Our Memories</h3>
+            </div>
+            <div class="item-card" onclick="openModal('music-modal')">
+                <div class="item-icon">🎵</div>
+                <h3>Your Track</h3>
+            </div>
+            <div class="item-card" onclick="openModal('letter-modal')">
+                <div class="item-icon">✉️</div>
+                <h3>A Letter</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="gallery-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('gallery-modal')">×</span>
+            <h2 style="margin-bottom: 15px; color: var(--accent-color); font-family: 'Dancing Script', cursive; font-size: 2.5rem;">Captured Moments</h2>
+            <div class="photo-gallery">
+                <div class="polaroid"><img src="pic1.jpg.jpg" alt="Memory 1"></div>
+                <div class="polaroid"><img src="pic3.jpg.jpg" alt="Memory 2"></div>
+                <div class="polaroid"><img src="pic4.jpg.jpg" alt="Memory 3"></div>
+                <div class="polaroid"><img src="pic5.jpg.jpg" alt="Memory 4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="music-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('music-modal')">×</span>
+            <h2 style="margin-bottom: 20px; color: var(--accent-color);">Your Birthday Track</h2>
+            <div style="border-radius:12px; overflow:hidden;">
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6Uelw0gGlmZas066gZ2g6m" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="letter-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('letter-modal')">×</span>
+            <h2 style="margin-bottom: 20px; color: var(--accent-color); font-family: 'Dancing Script', cursive; font-size: 2.5rem;">To My Beautiful Girl</h2>
+            <div class="letter-text">
+                Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. 
+                
+                I hate that I can’t be there to take you out, hold your hand, or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter, even from thousands of miles away. 
+                
+                I hope your day is as beautiful as you are. I love you more than words can say. Happy birthday, my beautiful girl. 💖
+                
+                Happy Birthday, beautiful! I’m sending you the biggest virtual hug until I can give you a real one. Today is all about you, which means you get a total pass and I promise to be on my best behavior for at least 24 hours. Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. I can't wait to see you soon. 😘❤️
+                <span>With all my love, <br>Santosh</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Target Date: June 13, 2026 Midnight Afghanistan Time (UTC+4:30)
+        const birthdayDate = new Date(Date.UTC(2026, 5, 12, 19, 30, 0)).getTime();
+
+        // Responsive Thread line adjustments
+        function adjustThread() {
+            const svg = document.getElementById('thread-svg');
+            const path = document.getElementById('thread-path');
+            const width = svg.clientWidth;
+            path.setAttribute('d', `M 85,65 C ${width/3},-10 ${2*width/3},140 ${width-85},65`);
+        }
+        window.addEventListener('resize', adjustThread);
+        window.addEventListener('load', adjustThread);
+
+        // Ambient background stars
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.style.position = 'absolute';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.backgroundColor = '#fff';
+            star.style.borderRadius = '50%';
+            star.style.opacity = Math.random();
+            star.style.animation = `pulse ${1 + Math.random() * 2}s infinite`;
+            starsContainer.appendChild(star);
+        }
+
+        // Live Countdown Logic Loop
+        const countdownX = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = birthdayDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("mins").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("secs").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance <= 0) {
+                clearInterval(countdownX);
+                document.getElementById("header-text").innerHTML = "🎉 HAPPY BIRTHDAY NOORZIA! 🎉";
+                document.getElementById("timer-display").style.display = "none";
+                document.getElementById("sub-text").innerHTML = "Your long-distance care package from Santosh has arrived!";
+                
+                const giftBox = document.getElementById("gift-box-container");
+                giftBox.classList.add("unlocked");
+                document.getElementById("click-prompt").style.display = "block";
+            }
+        }, 1000);
+
+        function openBox() {
+            const box = document.getElementById("gift-box-container");
+            if (!box.classList.contains("unlocked")) return;
+
+            box.classList.add("open");
+            document.getElementById("click-prompt").style.display = "none";
+            
+            setTimeout(() => {
+                box.style.display = "none";
+                const itemsContainer = document.getElementById("care-package-items");
+                itemsContainer.classList.add("reveal");
+            }, 600);
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add("active"); }
+        function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+    </script>
+</body>
+</html>
