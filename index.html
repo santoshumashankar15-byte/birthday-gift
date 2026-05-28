@@ -19,6 +19,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -73,10 +74,6 @@
             transition: transform 0.4s ease;
         }
         
-        .polaroid-lock-frame:hover {
-            transform: rotate(0deg) scale(1.04);
-        }
-
         .polaroid-lock-frame img {
             width: 100%;
             height: 310px;
@@ -158,8 +155,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.15s, transform 0.1s;
+            
+            /* Stops the browser from highlighting text when tapping quickly */
             user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
         .key:active {
@@ -257,7 +258,6 @@
 
         @keyframes forgeConnection { to { stroke-dashoffset: 0; } }
 
-        /* Titles styling */
         .birthday-titles h1 {
             font-family: 'Dancing Script', cursive;
             font-size: 3.8rem;
@@ -276,7 +276,6 @@
             text-transform: uppercase;
         }
 
-        /* Three-Card Scrapbook Hub */
         .scrapbook-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -329,7 +328,6 @@
         .vault-close { position: absolute; top: 15px; right: 22px; font-size: 2.4rem; cursor: pointer; opacity: 0.4; transition: opacity 0.3s; }
         .vault-close:hover { opacity: 1; color: var(--accent-glow); }
 
-        /* Polaroid Stack inside Memories */
         .polaroid-stack { display: flex; flex-direction: column; gap: 40px; align-items: center; margin-top: 30px; }
         
         .premium-polaroid {
@@ -348,7 +346,6 @@
         .luxury-letter-box { text-align: left; font-size: 0.98rem; line-height: 1.8; color: #e2e2e2; white-space: pre-line; font-weight: 300; padding: 10px 5px; }
         .luxury-letter-box span { font-family: 'Dancing Script', cursive; font-size: 2.3rem; color: var(--accent-glow); display: block; margin-top: 35px; text-align: right; }
 
-        /* Mobile Adjustments for Lock Screen */
         @media (max-width: 768px) {
             .lock-container { flex-direction: column; gap: 30px; }
             .polaroid-lock-frame { width: 280px; padding-bottom: 40px; }
@@ -362,6 +359,7 @@
 </head>
 <body>
 
+    <!-- 1. VIDEO-STYLE AUTHENTIC LOCK ENTRY SYSTEM -->
     <div id="lock-screen">
         <div class="lock-container">
             <div class="polaroid-lock-frame">
@@ -395,6 +393,7 @@
         </div>
     </div>
 
+    <!-- 2. HIGH-END INSIDE PORTAL SYSTEM -->
     <div class="universe" id="starfield"></div>
 
     <div class="main-stage">
@@ -427,6 +426,7 @@
         </div>
     </div>
 
+    <!-- MAIN CONTENT VAULTS -->
     <div class="glass-modal" id="gallery-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('gallery-vault')">×</span>
@@ -457,4 +457,82 @@
     <div class="glass-modal" id="letter-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('letter-vault')">×</span>
-            <h2 style
+            <h2 style="margin-bottom: 20px; color: var(--accent-glow); font-family: 'Dancing Script', cursive; font-size: 2.8rem;">To My Favorite Girl</h2>
+            <div class="luxury-letter-box">
+                Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. 
+                
+                I hate that I can’t be there to take you out, hold your hand, or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter, even from thousands of miles away. 
+                
+                I hope your day is as beautiful as you are. I love you more than words can say. Happy birthday, my beautiful girl. 💖
+                
+                Happy Birthday, beautiful! I’m sending you the biggest virtual hug until I can give you a real one. Today is all about you, which means you get a total pass and I promise to be on my best behavior for at least 24 hours. Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. I can't wait to see you soon. 😘❤️
+                <span>With all my love, <br>Santosh</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TARGET_PIN = "1306";
+        let activeInput = "";
+
+        function pressKey(val) {
+            const dotElements = document.querySelectorAll('.dot');
+            const feedbackMsg = document.getElementById('lock-message');
+            
+            if (val === '✖') {
+                activeInput = "";
+                dotElements.forEach(el => el.classList.remove('active', 'error'));
+                feedbackMsg.innerText = "Enter Passcode";
+                return;
+            }
+
+            if (activeInput.length >= 4) return;
+
+            activeInput += val;
+            dotElements[activeInput.length - 1].classList.add('active');
+
+            if (activeInput.length === 4) {
+                if (activeInput === TARGET_PIN) {
+                    setTimeout(() => {
+                        document.getElementById('lock-screen').classList.add('unlocked');
+                        document.body.classList.add('show-content');
+                    }, 250);
+                } else {
+                    setTimeout(() => {
+                        dotElements.forEach(el => el.classList.add('error'));
+                        feedbackMsg.innerText = "Incorrect Pin";
+                        setTimeout(() => pressKey('✖'), 750);
+                    }, 180);
+                }
+            }
+        }
+
+        function redrawBeam() {
+            const svg = document.getElementById('beam-svg');
+            const path = document.getElementById('beam-path');
+            if(!svg || !path) return;
+            const w = svg.clientWidth;
+            path.setAttribute('d', `M 85,65 C ${w/3},-25 ${2*w/3},155 ${w-85},65`);
+        }
+        window.addEventListener('resize', redrawBeam);
+        window.addEventListener('load', redrawBeam);
+
+        const field = document.getElementById('starfield');
+        for (let i = 0; i < 65; i++) {
+            const star = document.createElement('div');
+            star.style.position = 'absolute';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 2.5 + 'px';
+            star.style.height = star.style.width;
+            star.style.backgroundColor = '#ffffff';
+            star.style.borderRadius = '50%';
+            star.style.opacity = Math.random() * 0.7;
+            field.appendChild(star);
+        }
+
+        function openVault(targetId) { document.getElementById(targetId).classList.add("active"); }
+        function closeVault(targetId) { document.getElementById(targetId).classList.remove("active"); }
+    </script>
+</body>
+</html>
