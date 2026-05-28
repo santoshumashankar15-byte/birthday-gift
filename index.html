@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEST MODE: Happy Birthday to My Favorite HG! ♾️❤️</title>
+    <title>Happy Birthday Noorzia! ♾️❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Poppins:wght=300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -13,6 +13,7 @@
             --gold-glow: #ffd700;
             --card-bg: rgba(18, 13, 33, 0.75);
             --text-main: #ffffff;
+            --lock-red: #8b1e2f;
         }
 
         * {
@@ -26,15 +27,13 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            background: radial-gradient(circle at center, #171030 0%, #07050f 100%);
-            padding: 30px 20px;
+            justify-content: center;
+            background: radial-gradient(circle at center, #241420 0%, #07050f 100%);
         }
 
-        /* --- 1. COSMIC BACKGROUND SYSTEM --- */
         .universe {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -42,26 +41,139 @@
             z-index: 1;
         }
 
-        .shooting-star {
-            position: absolute;
-            top: 0; left: 50%;
-            width: 4px; height: 4px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
-            animation: animateStars 6s linear infinite;
+        /* --- LOCK SCREEN GATE SYSTEM --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #a31d31 0%, #4a0d17 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        #lock-screen.unlocked {
+            transform: translateY(-100vh);
             opacity: 0;
-        }
-        .shooting-star:nth-child(1) { top: 15%; left: 15%; animation-delay: 0s; animation-duration: 5s; }
-        .shooting-star:nth-child(2) { top: 40%; left: 75%; animation-delay: 2s; animation-duration: 4s; }
-        .shooting-star:nth-child(3) { top: 20%; left: 80%; animation-delay: 4.5s; animation-duration: 7s; }
-
-        @keyframes animateStars {
-            0% { transform: rotate(-45deg) translateX(0) scale(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: rotate(-45deg) translateX(-450px) scale(1); opacity: 0; }
+            pointer-events: none;
         }
 
+        .lock-container {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            align-items: center;
+            justify-content: space-around;
+            gap: 50px;
+        }
+
+        /* Polaroid Left Frame */
+        .polaroid-lock-frame {
+            background: #ffffff;
+            padding: 18px 18px 50px 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            width: 340px;
+            transform: rotate(-3deg);
+            transition: transform 0.4s;
+        }
+        
+        .polaroid-lock-frame:hover {
+            transform: rotate(0deg) scale(1.03);
+        }
+
+        .polaroid-lock-frame img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+
+        .polaroid-caption {
+            font-family: 'Dancing Script', cursive;
+            color: #222;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Keypad Right Panel */
+        .keypad-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 320px;
+        }
+
+        .keypad-header {
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .passcode-dots {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            height: 16px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .dot.active {
+            background-color: #fff;
+            transform: scale(1.15);
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .dot.error {
+            border-color: #ff4d6d;
+            background-color: #ff4d6d;
+            box-shadow: 0 0 10px #ff4d6d;
+        }
+
+        .grid-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            width: 100%;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 400;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.1s;
+            user-select: none;
+        }
+
+        .key:anonymous-content, .key:active {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0.92);
+        }
+
+        /* --- REVEALED WORLD DESIGN --- */
         .main-stage {
             position: relative;
             z-index: 10;
@@ -70,10 +182,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 1s ease 0.4s;
         }
 
-        /* --- 2. GOLDEN BEAM PROMISE SYSTEM --- */
+        body.show-content .main-stage {
+            opacity: 1;
+        }
+
         .connection-card {
             width: 100%;
             background: var(--card-bg);
@@ -82,7 +199,7 @@
             padding: 25px;
             margin-bottom: 35px;
             backdrop-filter: blur(20px);
-            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255,255,255,0.15);
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
         }
 
         .map-wrapper {
@@ -91,7 +208,6 @@
             align-items: center;
             position: relative;
             height: 150px;
-            margin-top: 10px;
         }
 
         .node {
@@ -108,32 +224,16 @@
             padding: 4px;
             background: linear-gradient(45deg, var(--accent-glow), var(--gold-glow));
             box-shadow: 0 0 25px rgba(255, 117, 151, 0.4);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .avatar-glow:hover {
-            transform: scale(1.12) rotate(6deg);
         }
 
         .avatar-glow img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+            width: 100%; height: 100%;
+            object-fit: cover; border-radius: 50%;
             border: 2px solid #07050f;
         }
 
-        .node-info h4 {
-            font-size: 0.95rem;
-            margin-top: 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .node-info p {
-            font-size: 0.75rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-        }
+        .node-info h4 { font-size: 0.95rem; margin-top: 10px; font-weight: 600; }
+        .node-info p { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; }
 
         .svg-container {
             position: absolute;
@@ -144,20 +244,17 @@
 
         .golden-beam {
             stroke: var(--gold-glow);
-            stroke-width: 3.5;
-            stroke-linecap: round;
-            fill: none;
-            stroke-dasharray: 1200;
-            stroke-dashoffset: 1200;
-            animation: forgeConnection 3.5s ease-in-out forwards;
+            stroke-width: 3.5; stroke-linecap: round; fill: none;
+            stroke-dasharray: 1200; stroke-dashoffset: 1200;
             filter: drop-shadow(0 0 10px var(--gold-glow));
         }
 
-        @keyframes forgeConnection {
-            to { stroke-dashoffset: 0; }
+        body.show-content .golden-beam {
+            animation: forgeConnection 3.5s ease-in-out forwards;
         }
 
-        /* --- TYPOGRAPHY --- */
+        @keyframes forgeConnection { to { stroke-dashoffset: 0; } }
+
         .birthday-titles h1 {
             font-family: 'Dancing Script', cursive;
             font-size: 3.6rem;
@@ -165,337 +262,151 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
         }
 
-        .birthday-titles p {
-            font-weight: 300;
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            opacity: 0.75;
-            margin-bottom: 35px;
-        }
-
-        /* --- 3. LUXURY UNBOXING CORE --- */
-        .gift-portal {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        .portal-glow {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255, 117, 151, 0.25) 0%, transparent 70%);
-            animation: pulseGlow 1.8s infinite alternate;
-        }
-
-        .luxury-box {
-            position: absolute;
-            bottom: 15px; width: 140px; height: 110px;
-            background: linear-gradient(135deg, #ff4d6d, #c9184a);
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            transition: all 0.5s ease;
-        }
-
-        .luxury-lid {
-            position: absolute;
-            bottom: 120px; width: 156px; height: 32px;
-            background: linear-gradient(135deg, #ff7597, #ff4d6d);
-            border-radius: 6px;
-            left: -8px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.35);
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s;
-        }
-
-        .luxury-box::before, .luxury-lid::before {
-            content: ''; position: absolute;
-            background: var(--gold-glow);
-            left: 50%; transform: translateX(-50%);
-            width: 22px; height: 100%;
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
-        }
-
-        .gift-portal:hover .luxury-lid {
-            transform: translateY(-12px) rotate(-4deg);
-        }
-
-        .gift-portal.opened .luxury-lid {
-            transform: translateY(-140px) rotate(-35deg);
-            opacity: 0;
-        }
-        
-        .gift-portal.opened .luxury-box {
-            transform: scale(0);
-            opacity: 0;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.92); opacity: 0.4; }
-            100% { transform: scale(1.12); opacity: 1; }
-        }
-
-        .action-hint {
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            color: var(--gold-glow);
-            text-transform: uppercase;
-            animation: textFlicker 2s infinite;
-            font-weight: 600;
-        }
-
-        @keyframes textFlicker {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* --- THE GRID HUB --- */
         .scrapbook-grid {
-            display: none;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            width: 100%;
-            margin-top: 15px;
-            opacity: 0;
-            transform: translateY(25px);
-            transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
-        }
-
-        .scrapbook-grid.active {
             display: grid;
-            opacity: 1;
-            transform: translateY(0);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; width: 100%; margin-top: 25px;
         }
 
         .scrapbook-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px 5px;
-            cursor: pointer;
-            backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 25px 5px;
+            cursor: pointer; text-align: center;
             box-shadow: 0 15px 35px rgba(0,0,0,0.35);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .scrapbook-card:hover {
-            transform: translateY(-8px) scale(1.04);
+            transform: translateY(-8px);
             border-color: var(--accent-glow);
             box-shadow: 0 20px 45px rgba(255, 117, 151, 0.3);
         }
 
-        .card-icon {
-            font-size: 2.4rem;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.15));
-        }
+        .card-icon { font-size: 2.4rem; margin-bottom: 8px; }
+        .scrapbook-card h3 { font-size: 0.85rem; font-weight: 400; }
 
-        .scrapbook-card h3 {
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-
-        /* --- PREMIUM MODAL VAULTS --- */
+        /* MODAL VAULTS */
         .glass-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(4, 3, 8, 0.96);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.45s ease;
-            padding: 20px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: all 0.45s ease; padding: 20px;
         }
 
-        .glass-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .glass-modal.active { opacity: 1; pointer-events: auto; }
 
         .modal-vault {
             background: linear-gradient(145deg, #15102a, #090614);
-            padding: 35px 20px;
-            border-radius: 28px;
-            max-width: 460px;
-            width: 100%;
-            position: relative;
+            padding: 35px 20px; border-radius: 28px;
+            max-width: 460px; width: 100%; position: relative;
             border: 1px solid rgba(255, 255, 255, 0.07);
-            box-shadow: 0 35px 75px rgba(0,0,0,0.85);
-            text-align: center;
-            max-height: 82vh;
-            overflow-y: auto;
-            transform: scale(0.88);
-            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 82vh; overflow-y: auto;
+            transform: scale(0.88); transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .glass-modal.active .modal-vault {
-            transform: scale(1);
-        }
+        .glass-modal.active .modal-vault { transform: scale(1); }
+        .vault-close { position: absolute; top: 14px; right: 20px; font-size: 2.2rem; cursor: pointer; opacity: 0.4; }
+        .vault-close:hover { opacity: 1; color: var(--accent-glow); }
 
-        .vault-close {
-            position: absolute;
-            top: 14px; right: 20px;
-            font-size: 2.2rem;
-            cursor: pointer;
-            opacity: 0.4;
-            <!-- VAULT 2: PREMIUM MUSIC INTERFACE -->
-    <div class="glass-modal" id="music-vault">
-        <div class="modal-vault">
-            <span class="vault-close" onclick="closeVault('music-vault')">×</span>
-            <h2 style="margin-bottom: 15px; color: var(--gold-glow); letter-spacing: 2px; font-size: 1.1rem; font-weight: 600;">YOUR SPECIAL TRACK</h2>
-            <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">DUE TO LIVE CROSS-BORDER STREAMING, USE THE PLATFORM HUB BELOW</p>
-            
-            <div style="border-radius:20px; overflow:hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6); background: #1ed760; padding: 25px; text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 10px;">🎵</div>
-                <h4 style="color: #000; font-weight: 600; margin-bottom: 5px;">JVKE - golden hour</h4>
-                <p style="color: #333; font-size: 0.85rem; margin-bottom: 20px;">Your designated birthday track from Santosh</p>
-                <a href="https://open.spotify.com/track/6Uelw0gGlmZas066gZ2g6m" target="_blank" style="display: inline-block; background: #000; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">🚀 OPEN IN SPOTIFY</a>
-            </div>
-        </div>
-    </div>
+        .polaroid-stack { display: flex; flex-direction: column; gap: 35px; align-items: center; margin-top: 25px; }
+        
         .premium-polaroid {
-            background: #ffffff;
-            padding: 14px 14px 44px 14px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.65);
-            border-radius: 4px;
-            width: 90%;
+            background: #ffffff; padding: 14px 14px 44px 14px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.65); border-radius: 4px; width: 90%;
             transition: all 0.4s ease;
         }
         .premium-polaroid:nth-child(1) { transform: rotate(-3deg); }
         .premium-polaroid:nth-child(2) { transform: rotate(4deg); }
-        .premium-polaroid:nth-child(3) { transform: rotate(-1deg); }
-        .premium-polaroid:nth-child(4) { transform: rotate(3deg); }
 
-        .premium-polaroid:hover {
-            transform: scale(1.07) rotate(0deg) translateY(-5px);
-            z-index: 99;
-            box-shadow: 0 25px 55px rgba(0,0,0,0.85);
-        }
+        .premium-polaroid:hover { transform: scale(1.07) rotate(0deg); z-index: 99; }
+        .premium-polaroid img { width: 100%; height: auto; object-fit: cover; }
 
-        .premium-polaroid img {
-            width: 100%;
-            height: auto;
-            max-height: 380px;
-            object-fit: cover;
-            border: 1px solid #eeeeee;
-        }
-
-        /* --- 5. HEART REVEAL LETTER BOX --- */
-        .luxury-letter-box {
-            text-align: left;
-            font-size: 0.95rem;
-            line-height: 1.75;
-            color: #e5e5e5;
-            white-space: pre-line;
-            font-weight: 300;
-            padding: 10px 5px;
-        }
-
-        .luxury-letter-box span {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.2rem;
-            color: var(--accent-glow);
-            display: block;
-            margin-top: 30px;
-            text-align: right;
-            text-shadow: 0 0 10px rgba(255, 117, 151, 0.3);
-        }
+        .luxury-letter-box { text-align: left; font-size: 0.95rem; line-height: 1.75; color: #e5e5e5; white-space: pre-line; font-weight: 300; }
+        .luxury-letter-box span { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--accent-glow); display: block; margin-top: 30px; text-align: right; }
     </style>
 </head>
 <body>
 
-    <!-- ATMOSPHERIC LIGHT MATRIX -->
-    <div class="universe" id="starfield">
-        <div class="shooting-star"></div>
-        <div class="shooting-star"></div>
-        <div class="shooting-star"></div>
+    <!-- 1. LOCK SCREEN CONTAINER -->
+    <div id="lock-screen">
+        <div class="lock-container">
+            <!-- Left Item: Polaroid Cover Frame -->
+            <div class="polaroid-lock-frame">
+                <img src="pic1.jpg.jpg" alt="Noorzia Cover">
+                <div class="polaroid-caption">Happy Birthday!</div>
+            </div>
+
+            <!-- Right Item: Pin Pad Engine -->
+            <div class="keypad-panel">
+                <div class="keypad-header" id="lock-message">Enter Passcode</div>
+                <div class="passcode-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="grid-pad">
+                    <div class="key" onclick="pressKey('1')">1</div>
+                    <div class="key" onclick="pressKey('2')">2</div>
+                    <div class="key" onclick="pressKey('3')">3</div>
+                    <div class="key" onclick="pressKey('4')">4</div>
+                    <div class="key" onclick="pressKey('5')">5</div>
+                    <div class="key" onclick="pressKey('6')">6</div>
+                    <div class="key" onclick="pressKey('7')">7</div>
+                    <div class="key" onclick="pressKey('8')">8</div>
+                    <div class="key" onclick="pressKey('9')">9</div>
+                    <div class="key" onclick="pressKey('✖')" style="background: rgba(255,77,109,0.15);">✖</div>
+                    <div class="key" onclick="pressKey('0')">0</div>
+                    <div class="key" style="font-size:0.9rem; opacity:0.4; cursor:default;">♾️</div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- 2. REVEALED CARE PACKAGE PORTAL -->
+    <div class="universe" id="starfield"></div>
+
     <div class="main-stage">
-        
-        <!-- TWO LOCATIONS STRAP SYSTEM -->
         <div class="connection-card">
             <h3 style="font-size: 0.85rem; font-weight: 300; letter-spacing: 3px; color: var(--gold-glow); text-align: center; text-transform: uppercase; margin-bottom: 12px;">To My Absolute Favorite HG ♾️</h3>
             <div class="map-wrapper">
-                
-                <!-- INDIA NODE -->
                 <div class="node">
-                    <div class="avatar-glow">
-                        <img src="my-finger.jpg.jpg" alt="Santosh Finger">
-                    </div>
-                    <div class="node-info" style="text-align: center;">
-                        <h4>Santosh</h4>
-                        <p>🇮🇳 India</p>
-                    </div>
+                    <div class="avatar-glow"><img src="my-finger.jpg.jpg" alt="Santosh Finger"></div>
+                    <div class="node-info" style="text-align: center;"><h4>Santosh</h4><p>🇮🇳 India</p></div>
                 </div>
-
-                <!-- GLOWING INTERACTION BEAM -->
                 <svg class="svg-container" id="beam-svg">
                     <path class="golden-beam" d="M 85,65 C 150,-20 220,150 285,65" id="beam-path"/>
                 </svg>
-
-                <!-- AFGHANISTAN NODE -->
                 <div class="node">
-                    <div class="avatar-glow">
-                        <img src="her-finger.jpg.jpg" alt="Noorzia Finger">
-                    </div>
-                    <div class="node-info" style="text-align: center;">
-                        <h4>Noorzia</h4>
-                        <p>🇦🇫 Afghanistan</p>
-                    </div>
+                    <div class="avatar-glow"><img src="her-finger.jpg.jpg" alt="Noorzia Finger"></div>
+                    <div class="node-info" style="text-align: center;"><h4>Noorzia</h4><p>🇦🇫 Afghanistan</p></div>
                 </div>
-
             </div>
         </div>
 
-        <!-- HERO HEADLINES -->
         <div class="birthday-titles" style="text-align: center;">
             <h1>Happy Birthday, Noorzia!</h1>
-            <p>[TEST MODE] ACTIVE UNLOCKED PREVIEW</p>
+            <p>YOUR CARE PACKAGE IS UNLOCKED</p>
         </div>
 
-        <!-- LUXURY BOX INTERACTION METRIC -->
-        <div class="gift-portal" id="interactive-gift" onclick="unlockScrapbook()">
-            <div class="portal-glow"></div>
-            <div class="luxury-lid"></div>
-            <div class="luxury-box"></div>
+        <div class="scrapbook-grid">
+            <div class="scrapbook-card" onclick="openVault('gallery-vault')"><div class="card-icon">📸</div><h3>Our Memories</h3></div>
+            <div class="scrapbook-card" onclick="openVault('music-vault')"><div class="card-icon">🎵</div><h3>Your Track</h3></div>
+            <div class="scrapbook-card" onclick="openVault('letter-vault')"><div class="card-icon">✉️</div><h3>The Letter</h3></div>
         </div>
-        <div class="action-hint" id="hint-tag">✨ TAP TO UNBOX CARE PACKAGE ✨</div>
-
-        <!-- REVEALED THREE-CARD SYSTEM -->
-        <div class="scrapbook-grid" id="scrapbook-core">
-            <div class="scrapbook-card" onclick="openVault('gallery-vault')">
-                <div class="card-icon">📸</div>
-                <h3>Our Memories</h3>
-            </div>
-            <div class="scrapbook-card" onclick="openVault('music-vault')">
-                <div class="card-icon">🎵</div>
-                <h3>Your Track</h3>
-            </div>
-            <div class="scrapbook-card" onclick="openVault('letter-vault')">
-                <div class="card-icon">✉️</div>
-                <h3>The Letter</h3>
-            </div>
-        </div>
-
     </div>
 
-    <!-- VAULT 1: INTERACTIVE GALLERY OVERLAY -->
+    <!-- VAULT INTERFACES -->
     <div class="glass-modal" id="gallery-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('gallery-vault')">×</span>
             <h2 style="margin-bottom: 10px; color: var(--accent-glow); font-family: 'Dancing Script', cursive; font-size: 2.8rem;">Moments Caught In Time</h2>
-            <p style="font-size: 0.75rem; letter-spacing: 2px; opacity: 0.6; margin-bottom: 15px; text-transform: uppercase;">Every single memory with you is a masterpiece</p>
             <div class="polaroid-stack">
                 <div class="premium-polaroid"><img src="pic1.jpg.jpg" alt="Photo 1"></div>
                 <div class="premium-polaroid"><img src="pic3.jpg.jpg" alt="Photo 2"></div>
@@ -505,18 +416,18 @@
         </div>
     </div>
 
-    <!-- VAULT 2: PREMIUM MUSIC INTERFACE -->
     <div class="glass-modal" id="music-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('music-vault')">×</span>
             <h2 style="margin-bottom: 25px; color: var(--gold-glow); letter-spacing: 2px; font-size: 1.1rem; font-weight: 600;">YOUR SPECIAL TRACK</h2>
-            <div style="border-radius:20px; overflow:hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6);">
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6Uelw0gGlmZas066gZ2g6m" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <div style="border-radius:20px; overflow:hidden; background: #1ed760; padding: 25px; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎵</div>
+                <h4 style="color: #000; font-weight: 600; margin-bottom: 5px;">JVKE - golden hour</h4>
+                <a href="https://open.spotify.com/track/6Uelw0gGlmZas066gZ2g6m" target="_blank" style="display: inline-block; background: #000; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">🚀 OPEN IN SPOTIFY</a>
             </div>
         </div>
     </div>
 
-    <!-- VAULT 3: THE HIGH-END CUSTOM LETTER DISPLAY -->
     <div class="glass-modal" id="letter-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('letter-vault')">×</span>
@@ -535,19 +446,56 @@
     </div>
 
     <script>
-        // High-performance vector anchoring formula
+        // Keypad Logic Engine
+        const CORRECT_PIN = "1306";
+        let currentInput = "";
+
+        function pressKey(key) {
+            const dots = document.querySelectorAll('.dot');
+            const message = document.getElementById('lock-message');
+            
+            if (key === '✖') {
+                currentInput = "";
+                dots.forEach(d => d.classList.remove('active', 'error'));
+                message.innerText = "Enter Passcode";
+                return;
+            }
+
+            if (currentInput.length >= 4) return;
+
+            currentInput += key;
+            dots[currentInput.length - 1].classList.add('active');
+
+            if (currentInput.length === 4) {
+                if (currentInput === CORRECT_PIN) {
+                    setTimeout(() => {
+                        document.getElementById('lock-screen').classList.add('unlocked');
+                        document.body.classList.add('show-content');
+                    }, 300);
+                } else {
+                    setTimeout(() => {
+                        dots.forEach(d => d.classList.add('error'));
+                        message.innerText = "Incorrect Pin";
+                        setTimeout(() => pressKey('✖'), 800);
+                    }, 200);
+                }
+            }
+        }
+
+        // Layout Math
         function structuralMatrix() {
             const svg = document.getElementById('beam-svg');
             const path = document.getElementById('beam-path');
+            if(!svg || !path) return;
             const width = svg.clientWidth;
             path.setAttribute('d', `M 85,65 C ${width/3},-25 ${2*width/3},155 ${width-85},65`);
         }
         window.addEventListener('resize', structuralMatrix);
         window.addEventListener('load', structuralMatrix);
 
-        // Particle field ambient loops
+        // Starfield matrix
         const starfield = document.getElementById('starfield');
-        for (let i = 0; i < 75; i++) {
+        for (let i = 0; i < 60; i++) {
             const pinpoint = document.createElement('div');
             pinpoint.style.position = 'absolute';
             pinpoint.style.left = Math.random() * 100 + '%';
@@ -556,28 +504,12 @@
             pinpoint.style.height = pinpoint.style.width;
             pinpoint.style.backgroundColor = '#fff';
             pinpoint.style.borderRadius = '50%';
-            pinpoint.style.opacity = Math.random() * 0.75;
-            pinpoint.style.animation = `textFlicker ${1.2 + Math.random() * 2.5}s infinite`;
+            pinpoint.style.opacity = Math.random() * 0.7;
             starfield.appendChild(pinpoint);
         }
 
-        // Vault initialization sequence
-        function unlockScrapbook() {
-            const portal = document.getElementById("interactive-gift");
-            portal.classList.add("opened");
-            document.getElementById("hint-tag").style.opacity = "0";
-            
-            setTimeout(() => {
-                portal.style.display = "none";
-                document.getElementById("hint-tag").style.display = "none";
-                const matrixGrid = document.getElementById("scrapbook-core");
-                matrixGrid.classList.add("active");
-            }, 650);
-        }
-
-        function openVault(vaultId) { document.getElementById(vaultId).classList.add("active"); }
-        function closeVault(vaultId) { document.getElementById(vaultId).classList.remove("active"); }
+        function openVault(id) { document.getElementById(id).classList.add("active"); }
+        function closeVault(id) { document.getElementById(id).classList.remove("active"); }
     </script>
 </body>
-</html>
 </html>
