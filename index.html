@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Noorzia! ♾️❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=600;700&family=Poppins:wght=300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -356,7 +356,7 @@
             display: block;
         }
 
-        /* ================= NEW SCREEN 4: THE MEMORY TIMELINE GRID ================= */
+        /* ================= SCREEN 4: THE MEMORY TIMELINE GRID ================= */
         #timeline-screen {
             background: radial-gradient(circle at center, #1b0a1c 0%, #070208 100%);
             color: white;
@@ -468,14 +468,14 @@
             top: -14px; left: 50%;
             transform: translateX(-50%);
             width: 11px; height: 16px;
-            background: radial-gradient(circle at cubic-bezier(0.4, 0, 0.2, 1), #fff099 0%, #ff8c00 100%);
+            background: radial-gradient(circle at center, #fff099 0%, #ff8c00 100%);
             border-radius: 50% 50% 20% 20%;
             box-shadow: 0 0 15px #ff4500, 0 0 25px #ffaa00;
             animation: flicker 0.3s infinite alternate;
         }
 
         @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+            0 { transform: translateX(-50%) scale(1) rotate(-1deg); }
             100% { transform: translateX(-50%) scale(1.18) rotate(1deg); opacity: 0.9; }
         }
 
@@ -505,9 +505,10 @@
 </head>
 <body>
 
-    <!-- SYSTEM AUDIO ENGINE (Taylor Swift - Lover Instrumental for premium romantic ambiance) -->
+    <!-- SYSTEM AUDIO ENGINE (JVKE - 'her' Official Audio Feed) -->
     <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://open.spotify.com/embed/track/3034O99JmR7OuyXbUuLzK4?utm_source=generator" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"> <!-- High-quality backup stream -->
     </audio>
 
     <!-- Floating Background Hearts Ambient Layer -->
@@ -580,7 +581,7 @@
         <button class="action-btn" onclick="goToTimelineStage()">Open Memory Lane ➔</button>
     </div>
 
-    <!-- NEW STAGE SCREEN 4: PRE-CAKE GALLERY CHRONICLES -->
+    <!-- STAGE SCREEN 4: PRE-CAKE GALLERY CHRONICLES -->
     <div id="timeline-screen" class="stage-view">
         <h2 class="timeline-title">Our Favorite Chapters ⏳</h2>
         <div class="memory-grid">
@@ -623,6 +624,7 @@
     <script>
         const PIN_KEY = "1306";
         let enteredPin = "";
+        let audioTriggered = false;
 
         // Ambient Background Generator
         function generateHearts() {
@@ -646,6 +648,14 @@
             const dots = document.querySelectorAll('.dot');
             const msg = document.getElementById('lock-message');
 
+            // Start music immediately on the very first tap to bypass browser blocks smoothly
+            if (!audioTriggered) {
+                const music = document.getElementById('bg-music');
+                music.play().then(() => {
+                    audioTriggered = true;
+                }).catch(e => console.log("Audio waiting..."));
+            }
+
             if (num === '✖') {
                 enteredPin = "";
                 dots.forEach(d => d.classList.remove('active', 'error'));
@@ -659,10 +669,6 @@
 
             if (enteredPin.length === 4) {
                 if (enteredPin === PIN_KEY) {
-                    // Try to trigger background soundtrack smoothly right at unlocking action
-                    const music = document.getElementById('bg-music');
-                    music.play().catch(e => console.log("Audio waiting for full user focus"));
-                    
                     setTimeout(() => switchStage('lock-screen', 'loading-screen', startLoadingAnimation), 300);
                 } else {
                     setTimeout(() => {
