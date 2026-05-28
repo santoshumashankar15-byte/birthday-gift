@@ -8,12 +8,11 @@
     
     <style>
         :root {
-            --bg-color: #07050f;
+            --bg-color: #0d0813;
             --accent-glow: #ff7597;
             --gold-glow: #ffd700;
-            --card-bg: rgba(18, 13, 33, 0.75);
+            --card-bg: rgba(25, 18, 43, 0.75);
             --text-main: #ffffff;
-            --lock-red: #8b1e2f;
         }
 
         * {
@@ -27,25 +26,19 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at center, #241420 0%, #07050f 100%);
+            background: radial-gradient(circle at center, #1f1230 0%, #0d0813 100%);
+            padding: 20px;
         }
 
-        .universe {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* --- LOCK SCREEN GATE SYSTEM --- */
+        /* --- 1. FULL-SCREEN VIDEO-STYLE GATE --- */
         #lock-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #a31d31 0%, #4a0d17 100%);
+            background: linear-gradient(135deg, #bc263d 0%, #4a0d17 100%);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -63,43 +56,43 @@
         .lock-container {
             display: flex;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             align-items: center;
-            justify-content: space-around;
-            gap: 50px;
+            justify-content: center;
+            gap: 80px;
         }
 
-        /* Polaroid Left Frame */
+        /* Video Left Frame: Polaroid */
         .polaroid-lock-frame {
             background: #ffffff;
-            padding: 18px 18px 50px 18px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding: 16px 16px 52px 16px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.55);
             border-radius: 4px;
-            width: 340px;
+            width: 330px;
             transform: rotate(-3deg);
-            transition: transform 0.4s;
+            transition: transform 0.4s ease;
         }
         
         .polaroid-lock-frame:hover {
-            transform: rotate(0deg) scale(1.03);
+            transform: rotate(0deg) scale(1.04);
         }
 
         .polaroid-lock-frame img {
             width: 100%;
-            height: 320px;
+            height: 310px;
             object-fit: cover;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e2e2e2;
         }
 
         .polaroid-caption {
             font-family: 'Dancing Script', cursive;
-            color: #222;
-            font-size: 2.2rem;
+            color: #1a1a1a;
+            font-size: 2.3rem;
             text-align: center;
             margin-top: 15px;
         }
 
-        /* Keypad Right Panel */
+        /* Video Right Frame: Pin Pad */
         .keypad-panel {
             display: flex;
             flex-direction: column;
@@ -108,57 +101,58 @@
         }
 
         .keypad-header {
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
+            font-size: 1.15rem;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
             text-transform: uppercase;
             font-weight: 400;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
         }
 
         .passcode-dots {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 16px;
+            margin-bottom: 30px;
             height: 16px;
             align-items: center;
         }
 
         .dot {
-            width: 14px;
-            height: 14px;
-            border: 2px solid #fff;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
             border-radius: 50%;
-            transition: background-color 0.2s, transform 0.2s;
+            transition: all 0.2s;
         }
 
         .dot.active {
             background-color: #fff;
-            transform: scale(1.15);
-            box-shadow: 0 0 10px #fff;
+            border-color: #fff;
+            transform: scale(1.2);
+            box-shadow: 0 0 12px #fff;
         }
 
         .dot.error {
             border-color: #ff4d6d;
             background-color: #ff4d6d;
-            box-shadow: 0 0 10px #ff4d6d;
+            box-shadow: 0 0 12px #ff4d6d;
         }
 
         .grid-pad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            gap: 20px;
             width: 100%;
         }
 
         .key {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            font-size: 1.6rem;
+            font-size: 1.65rem;
             font-weight: 400;
-            width: 75px;
-            height: 75px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -168,38 +162,46 @@
             user-select: none;
         }
 
-        .key:anonymous-content, .key:active {
-            background: rgba(255, 255, 255, 0.35);
-            transform: scale(0.92);
+        .key:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.9);
         }
 
-        /* --- REVEALED WORLD DESIGN --- */
+        /* --- 2. INSIDE PREMIUM SURPRISE WORLD --- */
+        .universe {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .main-stage {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
             opacity: 0;
-            transition: opacity 1s ease 0.4s;
+            transform: translateY(20px);
+            transition: all 1s ease 0.5s;
         }
 
         body.show-content .main-stage {
             opacity: 1;
+            transform: translateY(0);
         }
 
         .connection-card {
             width: 100%;
             background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 28px;
-            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 30px 25px;
             margin-bottom: 35px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
         .map-wrapper {
@@ -218,22 +220,22 @@
         }
 
         .avatar-glow {
-            width: 85px;
-            height: 85px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             padding: 4px;
             background: linear-gradient(45deg, var(--accent-glow), var(--gold-glow));
-            box-shadow: 0 0 25px rgba(255, 117, 151, 0.4);
+            box-shadow: 0 0 25px rgba(255, 117, 151, 0.35);
         }
 
         .avatar-glow img {
             width: 100%; height: 100%;
             object-fit: cover; border-radius: 50%;
-            border: 2px solid #07050f;
+            border: 2px solid #0d0813;
         }
 
-        .node-info h4 { font-size: 0.95rem; margin-top: 10px; font-weight: 600; }
-        .node-info p { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; }
+        .node-info h4 { font-size: 1rem; margin-top: 12px; font-weight: 600; letter-spacing: 0.5px; }
+        .node-info p { font-size: 0.75rem; opacity: 0.5; text-transform: uppercase; margin-top: 2px; }
 
         .svg-container {
             position: absolute;
@@ -246,103 +248,127 @@
             stroke: var(--gold-glow);
             stroke-width: 3.5; stroke-linecap: round; fill: none;
             stroke-dasharray: 1200; stroke-dashoffset: 1200;
-            filter: drop-shadow(0 0 10px var(--gold-glow));
+            filter: drop-shadow(0 0 12px var(--gold-glow));
         }
 
         body.show-content .golden-beam {
-            animation: forgeConnection 3.5s ease-in-out forwards;
+            animation: forgeConnection 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         @keyframes forgeConnection { to { stroke-dashoffset: 0; } }
 
+        /* Titles styling */
         .birthday-titles h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.6rem;
+            font-size: 3.8rem;
             background: linear-gradient(to right, #fff, var(--accent-glow), var(--gold-glow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
+        .birthday-titles p {
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            opacity: 0.7;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+        }
+
+        /* Three-Card Scrapbook Hub */
         .scrapbook-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px; width: 100%; margin-top: 25px;
+            gap: 16px; width: 100%;
         }
 
         .scrapbook-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px; padding: 25px 5px;
+            border-radius: 24px; padding: 30px 10px;
             cursor: pointer; text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .scrapbook-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-10px) scale(1.03);
             border-color: var(--accent-glow);
-            box-shadow: 0 20px 45px rgba(255, 117, 151, 0.3);
+            box-shadow: 0 25px 50px rgba(255, 117, 151, 0.25);
         }
 
-        .card-icon { font-size: 2.4rem; margin-bottom: 8px; }
-        .scrapbook-card h3 { font-size: 0.85rem; font-weight: 400; }
+        .card-icon { font-size: 2.6rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+        .scrapbook-card h3 { font-size: 0.9rem; font-weight: 400; letter-spacing: 0.5px; }
 
-        /* MODAL VAULTS */
+        /* --- OVERLAY MODALS --- */
         .glass-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(4, 3, 8, 0.96);
+            background: rgba(5, 3, 10, 0.97);
             z-index: 1000;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none;
-            transition: all 0.45s ease; padding: 20px;
+            transition: all 0.5s ease; padding: 20px;
         }
 
         .glass-modal.active { opacity: 1; pointer-events: auto; }
 
         .modal-vault {
-            background: linear-gradient(145deg, #15102a, #090614);
-            padding: 35px 20px; border-radius: 28px;
-            max-width: 460px; width: 100%; position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            max-height: 82vh; overflow-y: auto;
-            transform: scale(0.88); transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(145deg, #181230, #0a0717);
+            padding: 40px 24px; border-radius: 32px;
+            max-width: 480px; width: 100%; position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.9);
+            max-height: 85vh; overflow-y: auto;
+            transform: scale(0.85); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .glass-modal.active .modal-vault { transform: scale(1); }
-        .vault-close { position: absolute; top: 14px; right: 20px; font-size: 2.2rem; cursor: pointer; opacity: 0.4; }
+        .vault-close { position: absolute; top: 15px; right: 22px; font-size: 2.4rem; cursor: pointer; opacity: 0.4; transition: opacity 0.3s; }
         .vault-close:hover { opacity: 1; color: var(--accent-glow); }
 
-        .polaroid-stack { display: flex; flex-direction: column; gap: 35px; align-items: center; margin-top: 25px; }
+        /* Polaroid Stack inside Memories */
+        .polaroid-stack { display: flex; flex-direction: column; gap: 40px; align-items: center; margin-top: 30px; }
         
         .premium-polaroid {
-            background: #ffffff; padding: 14px 14px 44px 14px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.65); border-radius: 4px; width: 90%;
+            background: #ffffff; padding: 15px 15px 50px 15px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.7); border-radius: 4px; width: 92%;
             transition: all 0.4s ease;
         }
         .premium-polaroid:nth-child(1) { transform: rotate(-3deg); }
         .premium-polaroid:nth-child(2) { transform: rotate(4deg); }
+        .premium-polaroid:nth-child(3) { transform: rotate(-2deg); }
+        .premium-polaroid:nth-child(4) { transform: rotate(3deg); }
 
-        .premium-polaroid:hover { transform: scale(1.07) rotate(0deg); z-index: 99; }
-        .premium-polaroid img { width: 100%; height: auto; object-fit: cover; }
+        .premium-polaroid:hover { transform: scale(1.06) rotate(0deg); z-index: 99; box-shadow: 0 30px 60px rgba(0,0,0,0.85); }
+        .premium-polaroid img { width: 100%; height: auto; object-fit: cover; border: 1px solid #ededed; }
 
-        .luxury-letter-box { text-align: left; font-size: 0.95rem; line-height: 1.75; color: #e5e5e5; white-space: pre-line; font-weight: 300; }
-        .luxury-letter-box span { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--accent-glow); display: block; margin-top: 30px; text-align: right; }
+        .luxury-letter-box { text-align: left; font-size: 0.98rem; line-height: 1.8; color: #e2e2e2; white-space: pre-line; font-weight: 300; padding: 10px 5px; }
+        .luxury-letter-box span { font-family: 'Dancing Script', cursive; font-size: 2.3rem; color: var(--accent-glow); display: block; margin-top: 35px; text-align: right; }
+
+        /* Mobile Adjustments for Lock Screen */
+        @media (max-width: 768px) {
+            .lock-container { flex-direction: column; gap: 30px; }
+            .polaroid-lock-frame { width: 280px; padding-bottom: 40px; }
+            .polaroid-lock-frame img { height: 250px; }
+            .key { width: 68px; height: 68px; font-size: 1.4rem; }
+            .grid-pad { gap: 14px; }
+            .keypad-panel { width: 250px; }
+            .scrapbook-grid { grid-template-columns: 1fr; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOCK SCREEN CONTAINER -->
     <div id="lock-screen">
         <div class="lock-container">
-            <!-- Left Item: Polaroid Cover Frame -->
             <div class="polaroid-lock-frame">
-                <img src="pic1.jpg.jpg" alt="Noorzia Cover">
+                <img src="pic1.jpg.jpg" alt="Noorzia Cover Portrait">
                 <div class="polaroid-caption">Happy Birthday!</div>
             </div>
 
-            <!-- Right Item: Pin Pad Engine -->
             <div class="keypad-panel">
                 <div class="keypad-header" id="lock-message">Enter Passcode</div>
                 <div class="passcode-dots">
@@ -361,30 +387,29 @@
                     <div class="key" onclick="pressKey('7')">7</div>
                     <div class="key" onclick="pressKey('8')">8</div>
                     <div class="key" onclick="pressKey('9')">9</div>
-                    <div class="key" onclick="pressKey('✖')" style="background: rgba(255,77,109,0.15);">✖</div>
+                    <div class="key" onclick="pressKey('✖')" style="background: rgba(255,77,109,0.15); font-size: 1.3rem;">✖</div>
                     <div class="key" onclick="pressKey('0')">0</div>
-                    <div class="key" style="font-size:0.9rem; opacity:0.4; cursor:default;">♾️</div>
+                    <div class="key" style="font-size:1rem; opacity:0.35; cursor:default;">♾️</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. REVEALED CARE PACKAGE PORTAL -->
     <div class="universe" id="starfield"></div>
 
     <div class="main-stage">
         <div class="connection-card">
-            <h3 style="font-size: 0.85rem; font-weight: 300; letter-spacing: 3px; color: var(--gold-glow); text-align: center; text-transform: uppercase; margin-bottom: 12px;">To My Absolute Favorite HG ♾️</h3>
+            <h3 style="font-size: 0.85rem; font-weight: 300; letter-spacing: 3px; color: var(--gold-glow); text-align: center; text-transform: uppercase; margin-bottom: 15px;">To My Absolute Favorite HG ♾️</h3>
             <div class="map-wrapper">
                 <div class="node">
-                    <div class="avatar-glow"><img src="my-finger.jpg.jpg" alt="Santosh Finger"></div>
+                    <div class="avatar-glow"><img src="my-finger.jpg.jpg" alt="Santosh Finger Picture"></div>
                     <div class="node-info" style="text-align: center;"><h4>Santosh</h4><p>🇮🇳 India</p></div>
                 </div>
                 <svg class="svg-container" id="beam-svg">
-                    <path class="golden-beam" d="M 85,65 C 150,-20 220,150 285,65" id="beam-path"/>
+                    <path class="golden-beam" d="M 90,65 C 150,-25 220,155 280,65" id="beam-path"/>
                 </svg>
                 <div class="node">
-                    <div class="avatar-glow"><img src="her-finger.jpg.jpg" alt="Noorzia Finger"></div>
+                    <div class="avatar-glow"><img src="her-finger.jpg.jpg" alt="Noorzia Finger Picture"></div>
                     <div class="node-info" style="text-align: center;"><h4>Noorzia</h4><p>🇦🇫 Afghanistan</p></div>
                 </div>
             </div>
@@ -392,7 +417,7 @@
 
         <div class="birthday-titles" style="text-align: center;">
             <h1>Happy Birthday, Noorzia!</h1>
-            <p>YOUR CARE PACKAGE IS UNLOCKED</p>
+            <p>Your Exclusive Vault is Open</p>
         </div>
 
         <div class="scrapbook-grid">
@@ -402,11 +427,11 @@
         </div>
     </div>
 
-    <!-- VAULT INTERFACES -->
     <div class="glass-modal" id="gallery-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('gallery-vault')">×</span>
-            <h2 style="margin-bottom: 10px; color: var(--accent-glow); font-family: 'Dancing Script', cursive; font-size: 2.8rem;">Moments Caught In Time</h2>
+            <h2 style="margin-bottom: 8px; color: var(--accent-glow); font-family: 'Dancing Script', cursive; font-size: 2.8rem;">Moments Caught In Time</h2>
+            <p style="font-size: 0.75rem; letter-spacing: 2px; opacity: 0.5; margin-bottom: 20px; text-transform: uppercase;">Every single memory with you is a masterpiece</p>
             <div class="polaroid-stack">
                 <div class="premium-polaroid"><img src="pic1.jpg.jpg" alt="Photo 1"></div>
                 <div class="premium-polaroid"><img src="pic3.jpg.jpg" alt="Photo 2"></div>
@@ -419,11 +444,12 @@
     <div class="glass-modal" id="music-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('music-vault')">×</span>
-            <h2 style="margin-bottom: 25px; color: var(--gold-glow); letter-spacing: 2px; font-size: 1.1rem; font-weight: 600;">YOUR SPECIAL TRACK</h2>
-            <div style="border-radius:20px; overflow:hidden; background: #1ed760; padding: 25px; text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 10px;">🎵</div>
-                <h4 style="color: #000; font-weight: 600; margin-bottom: 5px;">JVKE - golden hour</h4>
-                <a href="https://open.spotify.com/track/6Uelw0gGlmZas066gZ2g6m" target="_blank" style="display: inline-block; background: #000; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">🚀 OPEN IN SPOTIFY</a>
+            <h2 style="margin-bottom: 25px; color: var(--gold-glow); letter-spacing: 2px; font-size: 1.1rem; font-weight: 600; text-transform: uppercase;">YOUR SPECIAL TRACK</h2>
+            <div style="border-radius:24px; overflow:hidden; background: #1ed760; padding: 30px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5);">
+                <div style="font-size: 3.5rem; margin-bottom: 12px;">🎵</div>
+                <h4 style="color: #000; font-size: 1.2rem; font-weight: 600; margin-bottom: 6px;">JVKE - golden hour</h4>
+                <p style="color: #222; font-size: 0.85rem; margin-bottom: 25px; font-weight: 400;">Your designated birthday track from Santosh</p>
+                <a href="https://open.spotify.com/track/6Uelw0gGlmZas066gZ2g6m" target="_blank" style="display: inline-block; background: #000; color: #fff; padding: 14px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.5px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">🚀 OPEN IN SPOTIFY</a>
             </div>
         </div>
     </div>
@@ -431,85 +457,4 @@
     <div class="glass-modal" id="letter-vault">
         <div class="modal-vault">
             <span class="vault-close" onclick="closeVault('letter-vault')">×</span>
-            <h2 style="margin-bottom: 20px; color: var(--accent-glow); font-family: 'Dancing Script', cursive; font-size: 2.8rem;">To My Favorite Girl</h2>
-            <div class="luxury-letter-box">
-                Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. 
-                
-                I hate that I can’t be there to take you out, hold your hand, or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter, even from thousands of miles away. 
-                
-                I hope your day is as beautiful as you are. I love you more than words can say. Happy birthday, my beautiful girl. 💖
-                
-                Happy Birthday, beautiful! I’m sending you the biggest virtual hug until I can give you a real one. Today is all about you, which means you get a total pass and I promise to be on my best behavior for at least 24 hours. Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. I can't wait to see you soon. 😘❤️
-                <span>With all my love, <br>Santosh</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Keypad Logic Engine
-        const CORRECT_PIN = "1306";
-        let currentInput = "";
-
-        function pressKey(key) {
-            const dots = document.querySelectorAll('.dot');
-            const message = document.getElementById('lock-message');
-            
-            if (key === '✖') {
-                currentInput = "";
-                dots.forEach(d => d.classList.remove('active', 'error'));
-                message.innerText = "Enter Passcode";
-                return;
-            }
-
-            if (currentInput.length >= 4) return;
-
-            currentInput += key;
-            dots[currentInput.length - 1].classList.add('active');
-
-            if (currentInput.length === 4) {
-                if (currentInput === CORRECT_PIN) {
-                    setTimeout(() => {
-                        document.getElementById('lock-screen').classList.add('unlocked');
-                        document.body.classList.add('show-content');
-                    }, 300);
-                } else {
-                    setTimeout(() => {
-                        dots.forEach(d => d.classList.add('error'));
-                        message.innerText = "Incorrect Pin";
-                        setTimeout(() => pressKey('✖'), 800);
-                    }, 200);
-                }
-            }
-        }
-
-        // Layout Math
-        function structuralMatrix() {
-            const svg = document.getElementById('beam-svg');
-            const path = document.getElementById('beam-path');
-            if(!svg || !path) return;
-            const width = svg.clientWidth;
-            path.setAttribute('d', `M 85,65 C ${width/3},-25 ${2*width/3},155 ${width-85},65`);
-        }
-        window.addEventListener('resize', structuralMatrix);
-        window.addEventListener('load', structuralMatrix);
-
-        // Starfield matrix
-        const starfield = document.getElementById('starfield');
-        for (let i = 0; i < 60; i++) {
-            const pinpoint = document.createElement('div');
-            pinpoint.style.position = 'absolute';
-            pinpoint.style.left = Math.random() * 100 + '%';
-            pinpoint.style.top = Math.random() * 100 + '%';
-            pinpoint.style.width = Math.random() * 2.5 + 'px';
-            pinpoint.style.height = pinpoint.style.width;
-            pinpoint.style.backgroundColor = '#fff';
-            pinpoint.style.borderRadius = '50%';
-            pinpoint.style.opacity = Math.random() * 0.7;
-            starfield.appendChild(pinpoint);
-        }
-
-        function openVault(id) { document.getElementById(id).classList.add("active"); }
-        function closeVault(id) { document.getElementById(id).classList.remove("active"); }
-    </script>
-</body>
-</html>
+            <h2 style
