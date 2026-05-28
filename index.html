@@ -5,58 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday Noorzia! ♾️❤️</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; font-family: sans-serif; background: #120813; color: white; overflow-x: hidden; }
-        .stage { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #120813; color: white; font-family: sans-serif; overflow-x: hidden; }
+        .stage { display: none; width: 100%; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .active { display: flex; }
         
-        /* Fixed Lock Screen */
-        .lock-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .polaroid { background: white; color: black; padding: 10px; width: 160px; text-align: center; }
-        .polaroid img { width: 100%; height: 140px; object-fit: cover; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 260px; }
-        .key { background: #333; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; }
+        /* Fixed Keypad Layout */
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 260px; }
+        .key { width: 60px; height: 60px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; }
+        
+        #envelope-area { text-align: center; }
+        .cake { font-size: 5rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="lock" class="stage active">
-        <div class="lock-container">
-            <div class="polaroid"><img src="pic1.jpg.jpg"><div>Happy Birthday!</div></div>
-            <div id="dots">_ _ _ _</div>
-            <div class="grid">
-                <div class="key" onclick="tap('1')">1</div><div class="key" onclick="tap('2')">2</div><div class="key" onclick="tap('3')">3</div>
-                <div class="key" onclick="tap('4')">4</div><div class="key" onclick="tap('5')">5</div><div class="key" onclick="tap('6')">6</div>
-                <div class="key" onclick="tap('7')">7</div><div class="key" onclick="tap('8')">8</div><div class="key" onclick="tap('9')">9</div>
-                <div class="key" onclick="tap('✖')">✖</div><div class="key" onclick="tap('0')">0</div><div class="key">♾️</div>
-            </div>
+    <audio id="bg-music" src="https://santoshumashankar15-byte.github.io/birthday-gift/music.mp3"></audio>
+
+    <div id="lock-screen" class="stage active">
+        <h2>Enter Passcode</h2>
+        <div id="dots" style="margin-bottom:20px;">_ _ _ _</div>
+        <div class="keypad-grid">
+            <div class="key" onclick="tap('1')">1</div><div class="key" onclick="tap('2')">2</div><div class="key" onclick="tap('3')">3</div>
+            <div class="key" onclick="tap('4')">4</div><div class="key" onclick="tap('5')">5</div><div class="key" onclick="tap('6')">6</div>
+            <div class="key" onclick="tap('7')">7</div><div class="key" onclick="tap('8')">8</div><div class="key" onclick="tap('9')">9</div>
+            <div class="key" onclick="tap('✖')">✖</div><div class="key" onclick="tap('0')">0</div><div class="key">♾️</div>
         </div>
     </div>
 
-    <div id="main" class="stage">
+    <div id="envelope-screen" class="stage">
+        <h1>You have a letter! 💌</h1>
+        <div class="cake" onclick="nextStage()">🎁</div>
+    </div>
+
+    <div id="final-screen" class="stage">
         <h1>Happy Birthday Noorzia! 🎂</h1>
         <p>You are the best!</p>
     </div>
 
-    <audio id="audio" src="music.mp3" loop></audio>
-
     <script>
-        let code = "";
+        let pin = "";
         function tap(n) {
-            if(n === '✖') { code = ""; document.getElementById('dots').innerText = "_ _ _ _"; return; }
-            code += n;
-            document.getElementById('dots').innerText = "*".repeat(code.length);
-            if(code.length === 4) {
-                if(code === "1306") {
-                    document.getElementById('audio').play();
-                    document.getElementById('lock').classList.remove('active');
-                    document.getElementById('main').classList.add('active');
-                } else {
-                    alert("Wrong Code!");
-                    code = "";
-                    document.getElementById('dots').innerText = "_ _ _ _";
-                }
+            if(n === '✖') { pin = ""; document.getElementById('dots').innerText = "_ _ _ _"; return; }
+            pin += n;
+            document.getElementById('dots').innerText = "*".repeat(pin.length);
+            if(pin === "1306") {
+                document.getElementById('bg-music').play();
+                document.getElementById('lock-screen').classList.remove('active');
+                document.getElementById('envelope-screen').classList.add('active');
             }
+        }
+        function nextStage() {
+            document.getElementById('envelope-screen').classList.remove('active');
+            document.getElementById('final-screen').classList.add('active');
         }
     </script>
 </body>
