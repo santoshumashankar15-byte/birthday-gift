@@ -475,7 +475,7 @@
         }
 
         @keyframes flicker {
-            0 { transform: translateX(-50%) scale(1) rotate(-1deg); }
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
             100% { transform: translateX(-50%) scale(1.18) rotate(1deg); opacity: 0.9; }
         }
 
@@ -505,10 +505,9 @@
 </head>
 <body>
 
-    <!-- SYSTEM AUDIO ENGINE (JVKE - 'her' Official Audio Feed) -->
+    <!-- SYSTEM AUDIO ENGINE (Plays your local uploaded music.mp3 flawlessly) -->
     <audio id="bg-music" loop>
-        <source src="https://open.spotify.com/embed/track/3034O99JmR7OuyXbUuLzK4?utm_source=generator" type="audio/mpeg">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"> <!-- High-quality backup stream -->
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Floating Background Hearts Ambient Layer -->
@@ -648,12 +647,12 @@
             const dots = document.querySelectorAll('.dot');
             const msg = document.getElementById('lock-message');
 
-            // Start music immediately on the very first tap to bypass browser blocks smoothly
+            // Start local music seamlessly on the very first button click
             if (!audioTriggered) {
                 const music = document.getElementById('bg-music');
                 music.play().then(() => {
                     audioTriggered = true;
-                }).catch(e => console.log("Audio waiting..."));
+                }).catch(e => console.log("Audio activation pending user action"));
             }
 
             if (num === '✖') {
