@@ -252,17 +252,22 @@
         }
 
         .wax-seal {
-            position: absolute;
-            top: 70px; left: 50%;
-            transform: translateX(-50%);
-            width: 55px; height: 55px;
-            background-color: #9c192b;
-            border-radius: 50%;
-            z-index: 11;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
+            /* Mobile Layout Breakpoints */
+        @media (max-width: 900px) {
+            .memory-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .lock-container { flex-direction: column; gap: 15px; padding: 10px; }
+            .polaroid-lock-frame { width: 190px; padding: 10px 10px 30px 10px; margin-bottom: 5px; }
+            .polaroid-lock-frame img { height: 170px; }
+            .polaroid-caption { font-size: 1.8rem; margin-top: 5px; }
+            .keypad-panel { width: 280px; }
+            .grid-pad { gap: 12px; }
+            .key { width: 55px; height: 55px; font-size: 1.3rem; }
+            .passcode-dots { margin-bottom: 15px; }
+            .envelope-wrapper { width: 90%; max-width: 420px; }
+            .letter-content-sheet { flex-direction: column; }
+            .letter-photo-side { display: none; }
+            .envelope-wrapper.opened .letter-content-sheet { height: 420px; transform: translateY(-130px); }
+        }
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
