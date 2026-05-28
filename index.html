@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Noorzia! ♾️❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -21,10 +21,35 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Poppins', sans-serif;
-            background-color: #bc263d; /* Her exact theme background */
+            background-color: #120813;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* Ambient background floating hearts */
+        .bg-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 117, 151, 0.15);
+            font-size: 1.5rem;
+            animation: floatUp 8s linear infinite;
+            bottom: -50px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
         }
 
         /* Stage Master Views */
@@ -37,7 +62,8 @@
             justify-content: center;
             flex-direction: column;
             opacity: 0;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
         }
 
         .stage-view.active {
@@ -47,7 +73,7 @@
 
         /* ================= SCREEN 1: LOCK SCREEN ================= */
         #lock-screen {
-            background: linear-gradient(135deg, #bc263d 0%, #4a0d17 100%);
+            background: linear-gradient(135deg, #bc263d 0%, #3a0710 100%);
         }
 
         .lock-container {
@@ -63,10 +89,15 @@
         .polaroid-lock-frame {
             background: #ffffff;
             padding: 16px 16px 52px 16px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.55);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
             border-radius: 4px;
             width: 330px;
             transform: rotate(-3deg);
+            transition: transform 0.5s ease;
+        }
+
+        .polaroid-lock-frame:hover {
+            transform: rotate(0deg) scale(1.03);
         }
 
         .polaroid-lock-frame img {
@@ -79,7 +110,7 @@
         .polaroid-caption {
             font-family: 'Dancing Script', cursive;
             color: #1a1a1a;
-            font-size: 2.3rem;
+            font-size: 2.5rem;
             text-align: center;
             margin-top: 15px;
         }
@@ -92,56 +123,57 @@
         }
 
         .keypad-header {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             letter-spacing: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             font-weight: 400;
-            color: rgba(255,255,255,0.95);
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .passcode-dots {
             display: flex;
-            gap: 16px;
-            margin-bottom: 30px;
+            gap: 18px;
+            margin-bottom: 35px;
             height: 16px;
             align-items: center;
         }
 
         .dot {
-            width: 13px;
-            height: 13px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
             border-radius: 50%;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
         .dot.active {
             background-color: #fff;
             border-color: #fff;
-            transform: scale(1.2);
-            box-shadow: 0 0 12px #fff;
+            transform: scale(1.25);
+            box-shadow: 0 0 15px #fff;
         }
 
         .dot.error {
             border-color: #ff4d6d;
             background-color: #ff4d6d;
-            box-shadow: 0 0 12px #ff4d6d;
+            box-shadow: 0 0 15px #ff4d6d;
         }
 
         .grid-pad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 22px;
             width: 100%;
         }
 
         .key {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
-            font-size: 1.65rem;
-            font-weight: 400;
+            font-size: 1.7rem;
+            font-weight: 300;
             width: 76px;
             height: 76px;
             border-radius: 50%;
@@ -149,231 +181,308 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s, transform 0.1s;
+            transition: all 0.2s ease;
             user-select: none;
+        }
+
+        .key:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .key:active {
             background: rgba(255, 255, 255, 0.3);
-            transform: scale(0.92);
+            transform: scale(0.9);
         }
 
         /* ================= SCREEN 2: LOADING SCREEN ================= */
         #loading-screen {
-            background-color: #fcebe9;
-            color: #4a0d17;
+            background: radial-gradient(circle at center, #2c1218 0%, #0c0204 100%);
+            color: #fcebe9;
         }
 
         .loader-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            font-weight: 400;
-            letter-spacing: 1px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-family: 'Poppins', sans-serif;
+            opacity: 0.9;
         }
 
         .progress-bar-container {
-            width: 320px;
-            height: 8px;
-            background: rgba(74, 13, 23, 0.1);
+            width: 350px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         .progress-bar-fill {
             height: 100%;
             width: 0%;
-            background: #bc263d;
+            background: linear-gradient(90deg, #ff7597, #bc263d);
             border-radius: 10px;
-            transition: width 3.5s linear;
+            transition: width 4s linear;
+            box-shadow: 0 0 10px #ff7597;
         }
 
         /* ================= SCREEN 3: ENVELOPE SLIDE-OUT ================= */
         #envelope-screen {
-            background-color: #fcebe9;
+            background: radial-gradient(circle at center, #fdf5f4 0%, #ebd3d0 100%);
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 480px;
-            height: 330px;
+            width: 520px;
+            height: 350px;
             cursor: pointer;
-            margin-top: 50px;
+            margin-top: 30px;
+            transition: transform 0.3s ease;
         }
 
-        /* Interactive Envelope Back base */
         .envelope-body {
             position: absolute;
-            bottom: 0; width: 100%; height: 240px;
-            background-color: #d64156;
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            bottom: 0; width: 100%; height: 260px;
+            background: linear-gradient(135deg, #d64156 0%, #b52b3f 100%);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
             z-index: 10;
         }
 
-        /* Heart Wax Seal Button */
         .wax-seal {
             position: absolute;
-            top: 75px; left: 50%;
+            top: 70px; left: 50%;
             transform: translateX(-50%);
-            width: 50px; height: 50px;
-            background-color: #bc263d;
+            width: 55px; height: 55px;
+            background-color: #9c192b;
             border-radius: 50%;
             z-index: 11;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            font-size: 1.6rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .envelope-wrapper:hover .wax-seal {
-            transform: translateX(-50%) scale(1.1);
+            transform: translateX(-50%) scale(1.15) rotate(10deg);
         }
 
-        /* The sliding letters containing text and side polaroids */
         .letter-content-sheet {
             position: absolute;
-            bottom: 10px; left: 5%;
-            width: 90%; height: 220px;
-            background: #fff;
+            bottom: 10px; left: 4%;
+            width: 92%; height: 240px;
+            background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            padding: 20px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.08);
+            padding: 25px;
             display: flex;
-            gap: 20px;
+            gap: 25px;
             z-index: 5;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), height 1s ease;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), height 1.2s ease;
         }
 
-        /* Clean slider layout action triggered */
         .envelope-wrapper.opened .letter-content-sheet {
-            transform: translateY(-180px);
-            height: 360px;
+            transform: translateY(-200px);
+            height: 400px;
             z-index: 12;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
         }
 
         .letter-text-area {
             flex: 1;
-            font-size: 0.78rem;
-            line-height: 1.6;
+            font-size: 0.82rem;
+            line-height: 1.65;
             color: #333;
             overflow-y: auto;
-            padding-right: 5px;
+            padding-right: 8px;
+            font-weight: 400;
         }
 
         .letter-photo-side {
-            width: 140px;
+            width: 150px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .mini-polaroid {
             background: white;
-            padding: 6px 6px 18px 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transform: rotate(3deg);
+            padding: 6px 6px 20px 6px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            transform: rotate(4deg);
+            transition: transform 0.3s;
+        }
+
+        .mini-polaroid:hover {
+            transform: scale(1.1) rotate(0deg);
+            z-index: 50;
         }
 
         .mini-polaroid img {
-            width: 100%; height: 95px; object-fit: cover;
+            width: 100%; height: 105px; object-fit: cover;
         }
 
         .mini-polaroid:nth-child(2) {
-            transform: rotate(-4deg);
+            transform: rotate(-6deg);
         }
 
-        .next-stage-btn {
-            margin-top: 40px;
-            padding: 12px 35px;
-            background-color: #bc263d;
+        .action-btn {
+            margin-top: 45px;
+            padding: 13px 40px;
+            background: linear-gradient(90deg, #bc263d, #e2435a);
             color: white;
             border: none;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(188,38,61,0.3);
+            box-shadow: 0 6px 20px rgba(188,38,61,0.4);
             display: none;
             z-index: 100;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .envelope-wrapper.opened + .next-stage-btn {
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(188,38,61,0.6);
+        }
+
+        .envelope-wrapper.opened + .action-btn {
             display: block;
         }
 
-        /* ================= SCREEN 4: INTERACTIVE CAKE WISH ================= */
+        /* ================= NEW SCREEN 4: THE MEMORY TIMELINE GRID ================= */
+        #timeline-screen {
+            background: radial-gradient(circle at center, #1b0a1c 0%, #070208 100%);
+            color: white;
+        }
+
+        .timeline-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            background: linear-gradient(45deg, #fff, #ff7597);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            width: 90%;
+            max-width: 1100px;
+            margin-bottom: 40px;
+        }
+
+        .memory-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .memory-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 117, 151, 0.4);
+            box-shadow: 0 20px 40px rgba(255,117,151,0.15);
+        }
+
+        .memory-item img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .memory-item p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= SCREEN 5: CAKE SURPRISE ================= */
         #cake-screen {
-            background-color: #120917;
+            background-color: #0b0510;
             color: #fff;
         }
 
         .cake-headline {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 50px;
-            letter-spacing: 1px;
-            transition: all 0.5s ease;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Digital Pixel Cake Frame Design */
         .birthday-cake-element {
             position: relative;
-            width: 180px;
-            height: 120px;
-            background: #f7a1b1;
-            border-radius: 12px 12px 4px 4px;
-            box-shadow: inset 0 -15px 0 #e28495, 0 10px 25px rgba(0,0,0,0.3);
+            width: 200px;
+            height: 130px;
+            background: linear-gradient(180deg, #f7a1b1 0%, #e28495 100%);
+            border-radius: 12px 12px 6px 6px;
+            box-shadow: inset 0 -15px 0 #cb6b7c, 0 15px 35px rgba(0,0,0,0.5);
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .birthday-cake-element:active {
+            transform: scale(0.95);
         }
 
         .cake-cream-topping {
             position: absolute;
-            top: 0; width: 100%; height: 20px;
+            top: 0; width: 100%; height: 25px;
             background: #ffffff;
             border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* Candles matching video */
         .candles-row {
             position: absolute;
-            top: -30px; left: 0; width: 100%;
+            top: -35px; left: 0; width: 100%;
             display: flex;
             justify-content: center;
-            gap: 18px;
+            gap: 22px;
         }
 
         .candle-stick {
-            width: 8px; height: 30px;
+            width: 9px; height: 35px;
             background: linear-gradient(to bottom, #ffd700, #ff7597);
             position: relative;
-            border-radius: 2px 2px 0 0;
+            border-radius: 3px 3px 0 0;
         }
 
         .candle-flame {
             position: absolute;
-            top: -12px; left: 50%;
+            top: -14px; left: 50%;
             transform: translateX(-50%);
-            width: 10px; height: 14px;
-            background: #ffa500;
+            width: 11px; height: 16px;
+            background: radial-gradient(circle at cubic-bezier(0.4, 0, 0.2, 1), #fff099 0%, #ff8c00 100%);
             border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 15px #ff4500, 0 0 25px #ffaa00;
             animation: flicker 0.3s infinite alternate;
         }
 
         @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1); }
-            100% { transform: translateX(-50%) scale(1.15); opacity: 0.8; }
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+            100% { transform: translateX(-50%) scale(1.18) rotate(1deg); opacity: 0.9; }
         }
 
-        /* Blow state animation hiding flames */
         .birthday-cake-element.blown .candle-flame {
             display: none;
         }
 
-        /* High Tech Canvas Particle Explosion Gate Overlay */
         #fireworks-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -381,26 +490,34 @@
             z-index: 99;
         }
 
-        /* Mobile Layout Optimizations */
-        @media (max-width: 768px) {
+        /* Mobile Layout Breakpoints */
+        @media (max-width: 900px) {
+            .memory-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .lock-container { flex-direction: column; gap: 40px; }
             .polaroid-lock-frame { width: 270px; padding-bottom: 40px; }
             .polaroid-lock-frame img { height: 250px; }
-            .key { width: 68px; height: 68px; font-size: 1.4rem; }
-            .envelope-wrapper { width: 90%; max-width: 400px; }
+            .envelope-wrapper { width: 90%; max-width: 420px; }
             .letter-content-sheet { flex-direction: column; }
             .letter-photo-side { display: none; }
-            .envelope-wrapper.opened .letter-content-sheet { height: 380px; transform: translateY(-140px); }
+            .envelope-wrapper.opened .letter-content-sheet { height: 420px; transform: translateY(-130px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- STAGE SCREEN 1: HER EXACT THEMED PIN PORTAL -->
+    <!-- SYSTEM AUDIO ENGINE (Taylor Swift - Lover Instrumental for premium romantic ambiance) -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Background Hearts Ambient Layer -->
+    <div class="bg-hearts" id="hearts-container"></div>
+
+    <!-- STAGE SCREEN 1: THE ENTER GATEWAY PASSCODE -->
     <div id="lock-screen" class="stage-view active">
         <div class="lock-container">
             <div class="polaroid-lock-frame">
-                <img src="pic1.jpg.jpg" alt="Noorzia Front Portrait">
+                <img src="pic1.jpg.jpg" alt="Cover Portrait">
                 <div class="polaroid-caption">Happy Birthday!</div>
             </div>
 
@@ -430,7 +547,7 @@
         </div>
     </div>
 
-    <!-- STAGE SCREEN 2: THE SYSTEM LOADING DASHBOARD BAR -->
+    <!-- STAGE SCREEN 2: PROGRESS LOADER SPLASH -->
     <div id="loading-screen" class="stage-view">
         <div class="loader-title">Loading your birthday surprise...</div>
         <div class="progress-bar-container">
@@ -438,19 +555,19 @@
         </div>
     </div>
 
-    <!-- STAGE SCREEN 3: HER EXPANDING HIDDEN LETTER SHEET -->
+    <!-- STAGE SCREEN 3: EXTENDING EXPANDABLE LETTER SHEET -->
     <div id="envelope-screen" class="stage-view">
-        <h2 style="font-family:'Dancing Script', cursive; font-size:3.2rem; color:#4a0d17;">You Have Mail! ✉️</h2>
+        <h2 style="font-family:'Dancing Script', cursive; font-size:3.5rem; color:#4a0d17; margin-bottom: 20px;">You Have Mail! ✉️</h2>
         <div class="envelope-wrapper" id="mail-envelope" onclick="openEnvelope()">
             <div class="letter-content-sheet">
                 <div class="letter-text-area">
-                    <h3 style="font-family:'Dancing Script', cursive; font-size:1.8rem; color:#bc263d; margin-bottom:10px;">To My Favorite Girl,</h3>
+                    <h3 style="font-family:'Dancing Script', cursive; font-size:1.9rem; color:#bc263d; margin-bottom:12px;">To My Favorite Girl,</h3>
                     Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. <br><br>
                     I hate that I can’t be there to take you out, hold your hand, or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter, even from thousands of miles away.<br><br>
                     I hope your day is as beautiful as you are. I love you more than words can say. Happy birthday, my beautiful girl. 💖<br><br>
                     Happy Birthday, beautiful! I’m sending you the biggest virtual hug until I can give you a real one. Today is all about you, which means you get a total pass and I promise to be on my best behavior for at least 24 hours. Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. I can't wait to see you soon. 😘❤️
                     <br><br>
-                    <span style="font-family:'Dancing Script', cursive; font-size:1.4rem; color:#bc263d; display:block; text-align:right; font-weight:bold;">With love, Santosh</span>
+                    <span style="font-family:'Dancing Script', cursive; font-size:1.5rem; color:#bc263d; display:block; text-align:right; font-weight:bold;">With love, Santosh</span>
                 </div>
                 <div class="letter-photo-side">
                     <div class="mini-polaroid"><img src="pic3.jpg.jpg"></div>
@@ -460,10 +577,34 @@
             <div class="envelope-body"></div>
             <div class="wax-seal">❤️</div>
         </div>
-        <button class="next-stage-btn" onclick="goToCakeStage()">Next Surprise! 👉</button>
+        <button class="action-btn" onclick="goToTimelineStage()">Open Memory Lane ➔</button>
     </div>
 
-    <!-- STAGE SCREEN 4: INTERACTIVE BLOW WISH GATEWAY -->
+    <!-- NEW STAGE SCREEN 4: PRE-CAKE GALLERY CHRONICLES -->
+    <div id="timeline-screen" class="stage-view">
+        <h2 class="timeline-title">Our Favorite Chapters ⏳</h2>
+        <div class="memory-grid">
+            <div class="memory-item">
+                <img src="pic1.jpg.jpg" alt="Memory 1">
+                <p>The Day It All Started ✨</p>
+            </div>
+            <div class="memory-item">
+                <img src="pic3.jpg.jpg" alt="Memory 2">
+                <p>Your Infinite Beautiful Smile ❤️</p>
+            </div>
+            <div class="memory-item">
+                <img src="pic4.jpg.jpg" alt="Memory 3">
+                <p>Every Little Moment With You ♾️</p>
+            </div>
+            <div class="memory-item">
+                <img src="pic5.jpg.jpg" alt="Memory 4">
+                <p>To More Adventures Together 🥂</p>
+            </div>
+        </div>
+        <button class="action-btn" style="display:block; margin-top:0;" onclick="goToCakeStage()">Ready For Your Cake? 🎂</button>
+    </div>
+
+    <!-- STAGE SCREEN 5: BLOW AND CELEBRATE GATE -->
     <div id="cake-screen" class="stage-view">
         <canvas id="fireworks-canvas"></canvas>
         <div class="cake-headline" id="wish-title">Make a Wish! ✨</div>
@@ -479,12 +620,28 @@
     </div>
 
 
-    <!-- CONTROLLER SYSTEM APPLICATION LOGIC -->
     <script>
-        const PIN_KEY = "1306"; // Her birthday code entry gate
+        const PIN_KEY = "1306";
         let enteredPin = "";
 
-        // Screen 1: Pin Entry Mechanics 
+        // Ambient Background Generator
+        function generateHearts() {
+            const container = document.getElementById('hearts-container');
+            const icons = ['❤️', '💖', '✨', '🌸'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 1.2 + 1) + 'rem';
+                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 9000);
+            }, 600);
+        }
+        generateHearts();
+
+        // Pin Keypad Validation Mechanics
         function tapKey(num) {
             const dots = document.querySelectorAll('.dot');
             const msg = document.getElementById('lock-message');
@@ -502,6 +659,10 @@
 
             if (enteredPin.length === 4) {
                 if (enteredPin === PIN_KEY) {
+                    // Try to trigger background soundtrack smoothly right at unlocking action
+                    const music = document.getElementById('bg-music');
+                    music.play().catch(e => console.log("Audio waiting for full user focus"));
+                    
                     setTimeout(() => switchStage('lock-screen', 'loading-screen', startLoadingAnimation), 300);
                 } else {
                     setTimeout(() => {
@@ -513,7 +674,6 @@
             }
         }
 
-        // Global Transition Control Router
         function switchStage(currentId, nextId, callback = null) {
             const current = document.getElementById(currentId);
             const next = document.getElementById(nextId);
@@ -526,40 +686,45 @@
                     next.style.opacity = "1";
                     if (callback) callback();
                 }, 50);
-            }, 600);
+            }, 800);
         }
 
-        // Screen 2: Progress Loading Bar Simulation Logic
         function startLoadingAnimation() {
             const fill = document.getElementById('loading-fill');
             setTimeout(() => {
                 fill.style.width = "100%";
                 setTimeout(() => {
                     switchStage('loading-screen', 'envelope-screen');
-                }, 3600); // Transitions automatically right as bar finishes
+                }, 4200);
             }, 100);
         }
 
-        // Screen 3: Mail Click Envelope Expansion Trigger
         function openEnvelope() {
             document.getElementById('mail-envelope').classList.add('opened');
         }
 
-        function goToCakeStage() {
-            switchStage('envelope-screen', 'cake-screen', initFireworksEngine);
+        function goToTimelineStage() {
+            switchStage('envelope-screen', 'timeline-screen');
         }
 
-        // Screen 4: Candle Action and Custom Text Swap 
+        function goToCakeStage() {
+            switchStage('timeline-screen', 'cake-screen', initFireworksEngine);
+        }
+
         function blowCandles() {
             const cake = document.getElementById('interactive-cake');
             if (cake.classList.contains('blown')) return;
 
             cake.classList.add('blown');
-            document.getElementById('wish-title').innerHTML = "Happy Birthday to You! 🎉❤️";
+            const title = document.getElementById('wish-title');
+            title.innerHTML = "Happy Birthday to You Noorzia! 🎉❤️";
+            title.style.color = "#ff7597";
+            title.style.textShadow = "0 0 25px #ff7597";
+            
             triggerExplosionEffect();
         }
 
-        // High Fidelity Canvas Burst Particle System
+        // Particle Canvas Graphics Array Engines
         let canvas, ctx, animationFrameId;
         let particlesArray = [];
 
@@ -577,18 +742,26 @@
             }
         }
 
-        class FireworkParticle {
-            constructor(x, y, color) {
+        class CinematicParticle {
+            constructor(x, y, color, isLantern = false) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
-                this.radius = Math.random() * 3 + 1;
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 6 + 2;
-                this.vx = Math.cos(angle) * speed;
-                this.vy = Math.sin(angle) * speed;
-                this.alpha = 1;
-                this.gravity = 0.05;
+                this.isLantern = isLantern;
+                this.radius = isLantern ? Math.random() * 4 + 3 : Math.random() * 3.5 + 1;
+                
+                if (isLantern) {
+                    this.vx = Math.sin(Math.random() * 2) * 0.4;
+                    this.vy = -(Math.random() * 1.2 + 0.6);
+                    this.alpha = Math.random() * 0.5 + 0.5;
+                } else {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 7 + 2;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.alpha = 1;
+                }
+                this.gravity = isLantern ? 0 : 0.06;
             }
             draw() {
                 ctx.save();
@@ -596,6 +769,10 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
+                if (this.isLantern) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = this.color;
+                }
                 ctx.fill();
                 ctx.restore();
             }
@@ -603,24 +780,31 @@
                 this.x += this.vx;
                 this.y += this.vy;
                 this.vy += this.gravity;
-                this.alpha -= 0.012;
+                this.alpha -= this.isLantern ? 0.002 : 0.012;
             }
         }
 
         function triggerExplosionEffect() {
-            const colors = ['#ff7597', '#ffd700', '#00f5d4', '#7b2cbf', '#ff9f1c'];
+            const colors = ['#ff7597', '#ffd700', '#00f5d4', '#ff4d6d', '#ffffff'];
             
-            // Generate multiple burst centers across viewport
-            for (let b = 0; b < 5; b++) {
+            // Standard Firework bursts
+            for (let b = 0; b < 6; b++) {
                 setTimeout(() => {
                     const centerX = Math.random() * canvas.width;
-                    const centerY = Math.random() * (canvas.height * 0.6) + 100;
+                    const centerY = Math.random() * (canvas.height * 0.5) + 120;
                     const randColor = colors[Math.floor(Math.random() * colors.length)];
-                    for (let i = 0; i < 60; i++) {
-                        particlesArray.push(new FireworkParticle(centerX, centerY, randColor));
+                    for (let i = 0; i < 70; i++) {
+                        particlesArray.push(new CinematicParticle(centerX, centerY, randColor, false));
                     }
-                }, b * 300);
+                }, b * 350);
             }
+
+            // Continuous Floating Lantern Spawner Loop
+            setInterval(() => {
+                if(particlesArray.length < 300) {
+                    particlesArray.push(new CinematicParticle(Math.random() * canvas.width, canvas.height + 20, '#ff9f1c', true));
+                }
+            }, 100);
             
             if (!animationFrameId) renderEngineLoop();
         }
@@ -630,7 +814,7 @@
             for (let i = particlesArray.length - 1; i >= 0; i--) {
                 particlesArray[i].update();
                 particlesArray[i].draw();
-                if (particlesArray[i].alpha <= 0) {
+                if (particlesArray[i].alpha <= 0 || particlesArray[i].y < -20) {
                     particlesArray.splice(i, 1);
                 }
             }
