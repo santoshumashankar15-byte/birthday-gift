@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Noorzia! ♾️❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Poppins:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -19,26 +19,35 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Keeps it strictly one perfect screen just like the video */
+            overflow: hidden;
             font-family: 'Poppins', sans-serif;
-            background-color: #0d0813;
-        }
-
-        /* ================= 1. THE EXACT VIDEO LOCK SCREEN ================= */
-        #lock-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #bc263d 0%, #4a0d17 100%);
-            z-index: 9999;
+            background-color: #bc263d; /* Her exact theme background */
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        /* Smooth slide-up transition matching the video */
-        #lock-screen.unlocked {
-            transform: translateY(-100vh);
+        /* Stage Master Views */
+        .stage-view {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .stage-view.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ================= SCREEN 1: LOCK SCREEN ================= */
+        #lock-screen {
+            background: linear-gradient(135deg, #bc263d 0%, #4a0d17 100%);
         }
 
         .lock-container {
@@ -51,7 +60,6 @@
             padding: 20px;
         }
 
-        /* Video Left Side: White Polaroid Picture Frame */
         .polaroid-lock-frame {
             background: #ffffff;
             padding: 16px 16px 52px 16px;
@@ -76,7 +84,6 @@
             margin-top: 15px;
         }
 
-        /* Video Right Side: PIN Code Gate */
         .keypad-panel {
             display: flex;
             flex-direction: column;
@@ -144,8 +151,6 @@
             justify-content: center;
             transition: background 0.15s, transform 0.1s;
             user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
         }
 
         .key:active {
@@ -153,220 +158,249 @@
             transform: scale(0.92);
         }
 
-        /* ================= 2. THE EXACT INSIDE VIDEO SCREEN SYSTEM ================= */
-        #main-content-portal {
-            width: 100%;
+        /* ================= SCREEN 2: LOADING SCREEN ================= */
+        #loading-screen {
+            background-color: #fcebe9;
+            color: #4a0d17;
+        }
+
+        .loader-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar-container {
+            width: 320px;
+            height: 8px;
+            background: rgba(74, 13, 23, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
             height: 100%;
+            width: 0%;
+            background: #bc263d;
+            border-radius: 10px;
+            transition: width 3.5s linear;
+        }
+
+        /* ================= SCREEN 3: ENVELOPE SLIDE-OUT ================= */
+        #envelope-screen {
+            background-color: #fcebe9;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 480px;
+            height: 330px;
+            cursor: pointer;
+            margin-top: 50px;
+        }
+
+        /* Interactive Envelope Back base */
+        .envelope-body {
+            position: absolute;
+            bottom: 0; width: 100%; height: 240px;
+            background-color: #d64156;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        /* Heart Wax Seal Button */
+        .wax-seal {
+            position: absolute;
+            top: 75px; left: 50%;
+            transform: translateX(-50%);
+            width: 50px; height: 50px;
+            background-color: #bc263d;
+            border-radius: 50%;
+            z-index: 11;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at center, #1a102f 0%, #08050e 100%);
-            position: relative;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .envelope-wrapper:hover .wax-seal {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        /* The sliding letters containing text and side polaroids */
+        .letter-content-sheet {
+            position: absolute;
+            bottom: 10px; left: 5%;
+            width: 90%; height: 220px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
             padding: 20px;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+            display: flex;
+            gap: 20px;
+            z-index: 5;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), height 1s ease;
         }
 
-        body.show-content #main-content-portal {
-            opacity: 1;
-            transform: scale(1);
+        /* Clean slider layout action triggered */
+        .envelope-wrapper.opened .letter-content-sheet {
+            transform: translateY(-180px);
+            height: 360px;
+            z-index: 12;
         }
 
-        /* Background Sparkle Particles */
-        .ambient-particles {
+        .letter-text-area {
+            flex: 1;
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: #333;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .letter-photo-side {
+            width: 140px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mini-polaroid {
+            background: white;
+            padding: 6px 6px 18px 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transform: rotate(3deg);
+        }
+
+        .mini-polaroid img {
+            width: 100%; height: 95px; object-fit: cover;
+        }
+
+        .mini-polaroid:nth-child(2) {
+            transform: rotate(-4deg);
+        }
+
+        .next-stage-btn {
+            margin-top: 40px;
+            padding: 12px 35px;
+            background-color: #bc263d;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(188,38,61,0.3);
+            display: none;
+            z-index: 100;
+        }
+
+        .envelope-wrapper.opened + .next-stage-btn {
+            display: block;
+        }
+
+        /* ================= SCREEN 4: INTERACTIVE CAKE WISH ================= */
+        #cake-screen {
+            background-color: #120917;
+            color: #fff;
+        }
+
+        .cake-headline {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            transition: all 0.5s ease;
+        }
+
+        /* Digital Pixel Cake Frame Design */
+        .birthday-cake-element {
+            position: relative;
+            width: 180px;
+            height: 120px;
+            background: #f7a1b1;
+            border-radius: 12px 12px 4px 4px;
+            box-shadow: inset 0 -15px 0 #e28495, 0 10px 25px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .cake-cream-topping {
+            position: absolute;
+            top: 0; width: 100%; height: 20px;
+            background: #ffffff;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Candles matching video */
+        .candles-row {
+            position: absolute;
+            top: -30px; left: 0; width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .candle-stick {
+            width: 8px; height: 30px;
+            background: linear-gradient(to bottom, #ffd700, #ff7597);
+            position: relative;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .candle-flame {
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            width: 10px; height: 14px;
+            background: #ffa500;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 10px #ff0000;
+            animation: flicker 0.3s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.15); opacity: 0.8; }
+        }
+
+        /* Blow state animation hiding flames */
+        .birthday-cake-element.blown .candle-flame {
+            display: none;
+        }
+
+        /* High Tech Canvas Particle Explosion Gate Overlay */
+        #fireworks-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 99;
         }
 
-        .inner-wrapper {
-            position: relative;
-            z-index: 5;
-            width: 100%;
-            max-width: 1050px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Premium Title Layout styling */
-        .birthday-main-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.2rem;
-            background: linear-gradient(45deg, #ffffff, #ff7597, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .birthday-subtitle {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: rgba(255, 255, 255, 0.55);
-            margin-bottom: 50px;
-            text-align: center;
-        }
-
-        /* The Exact Video Interactive Card Grid Row */
-        .video-deck-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        /* Interactive Polaroid Cards Container */
-        .interactive-polaroid-container {
-            position: relative;
-            cursor: pointer;
-            perspective: 1000px;
-            height: 340px;
-        }
-
-        .polaroid-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-        }
-
-        /* Card flip logic when clicked/active */
-        .interactive-polaroid-container.flipped .polaroid-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .polaroid-front, .polaroid-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            background: #ffffff;
-            padding: 14px 14px 45px 14px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.45);
-            border-radius: 2px;
-        }
-
-        /* Classic video frame tilts */
-        .interactive-polaroid-container:nth-child(1) { transform: rotate(-3deg); }
-        .interactive-polaroid-container:nth-child(2) { transform: rotate(1deg); }
-        .interactive-polaroid-container:nth-child(3) { transform: rotate(4deg); }
-
-        .interactive-polaroid-container:hover {
-            z-index: 20;
-        }
-
-        .polaroid-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: 1px solid #eeeeee;
-        }
-
-        /* Polaroid Caption Font Style */
-        .card-label-text {
-            font-family: 'Dancing Script', cursive;
-            color: #1a1a1a;
-            font-size: 2rem;
-            margin-top: 12px;
-            text-align: center;
-            width: 100%;
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-        }
-
-        /* Back of the card contents */
-        .polaroid-back {
-            background: linear-gradient(145deg, #1f173a, #0d081b);
-            border: 1px solid rgba(255,255,255,0.1);
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        /* Custom Content Styling inside the cards */
-        .letter-preview-box {
-            font-size: 0.8rem;
-            line-height: 1.6;
-            color: rgba(255,255,255,0.9);
-            text-align: left;
-            overflow-y: auto;
-            max-height: 100%;
-            padding-right: 4px;
-            font-weight: 300;
-        }
-
-        .spotify-embed-card {
-            background: #1ed760;
-            width: 100%;
-            padding: 25px 15px;
-            border-radius: 16px;
-            color: #000000;
-        }
-
-        .spotify-embed-card h4 { font-weight: 600; font-size: 1.1rem; margin-top: 5px; }
-        .spotify-embed-card p { font-size: 0.75rem; opacity: 0.7; margin-bottom: 15px; }
-        
-        .spotify-link-btn {
-            display: inline-block;
-            background: #000000;
-            color: #ffffff;
-            padding: 8px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        /* Photo stack back side wrapper alignment */
-        .mini-photo-reel {
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .mini-photo-reel img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 4px;
-        }
-
-        /* Scrollbar customization */
-        .letter-preview-box::-webkit-scrollbar { width: 4px; }
-        .letter-preview-box::-webkit-scrollbar-thumb { background: rgba(255,117,151,0.3); border-radius: 4px; }
-
-        /* Mobile Layout Breakpoints */
-        @media (max-width: 850px) {
+        /* Mobile Layout Optimizations */
+        @media (max-width: 768px) {
             .lock-container { flex-direction: column; gap: 40px; }
             .polaroid-lock-frame { width: 270px; padding-bottom: 40px; }
             .polaroid-lock-frame img { height: 250px; }
             .key { width: 68px; height: 68px; font-size: 1.4rem; }
-            .grid-pad { gap: 15px; }
-            
-            body, html { overflow-y: auto; height: auto; }
-            #main-content-portal { height: auto; padding: 40px 20px; }
-            .video-deck-grid { grid-template-columns: 1fr; gap: 40px; }
-            .birthday-main-title { font-size: 2.8rem; }
+            .envelope-wrapper { width: 90%; max-width: 400px; }
+            .letter-content-sheet { flex-direction: column; }
+            .letter-photo-side { display: none; }
+            .envelope-wrapper.opened .letter-content-sheet { height: 380px; transform: translateY(-140px); }
         }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
+    <!-- STAGE SCREEN 1: HER EXACT THEMED PIN PORTAL -->
+    <div id="lock-screen" class="stage-view active">
         <div class="lock-container">
             <div class="polaroid-lock-frame">
-                <img src="pic1.jpg.jpg" alt="Noorzia Cover Portrait">
+                <img src="pic1.jpg.jpg" alt="Noorzia Front Portrait">
                 <div class="polaroid-caption">Happy Birthday!</div>
             </div>
 
@@ -379,147 +413,228 @@
                     <div class="dot"></div>
                 </div>
                 <div class="grid-pad">
-                    <div class="key" onclick="pressNumber('1')">1</div>
-                    <div class="key" onclick="pressNumber('2')">2</div>
-                    <div class="key" onclick="pressNumber('3')">3</div>
-                    <div class="key" onclick="pressNumber('4')">4</div>
-                    <div class="key" onclick="pressNumber('5')">5</div>
-                    <div class="key" onclick="pressNumber('6')">6</div>
-                    <div class="key" onclick="pressNumber('7')">7</div>
-                    <div class="key" onclick="pressNumber('8')">8</div>
-                    <div class="key" onclick="pressNumber('9')">9</div>
-                    <div class="key" onclick="pressNumber('✖')" style="background: rgba(255,77,109,0.15); font-size: 1.3rem;">✖</div>
-                    <div class="key" onclick="pressNumber('0')">0</div>
+                    <div class="key" onclick="tapKey('1')">1</div>
+                    <div class="key" onclick="tapKey('2')">2</div>
+                    <div class="key" onclick="tapKey('3')">3</div>
+                    <div class="key" onclick="tapKey('4')">4</div>
+                    <div class="key" onclick="tapKey('5')">5</div>
+                    <div class="key" onclick="tapKey('6')">6</div>
+                    <div class="key" onclick="tapKey('7')">7</div>
+                    <div class="key" onclick="tapKey('8')">8</div>
+                    <div class="key" onclick="tapKey('9')">9</div>
+                    <div class="key" onclick="tapKey('✖')" style="background: rgba(255,77,109,0.15); font-size: 1.3rem;">✖</div>
+                    <div class="key" onclick="tapKey('0')">0</div>
                     <div class="key" style="font-size:1rem; opacity:0.3; cursor:default;">♾️</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- STAGE SCREEN 2: THE SYSTEM LOADING DASHBOARD BAR -->
+    <div id="loading-screen" class="stage-view">
+        <div class="loader-title">Loading your birthday surprise...</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="loading-fill"></div>
+        </div>
+    </div>
 
-    <div id="main-content-portal">
-        <div class="ambient-particles" id="starfield"></div>
-
-        <div class="inner-wrapper">
-            <h1 class="birthday-main-title">Happy Birthday, Noorzia!</h1>
-            <p class="birthday-subtitle">Click the cards to reveal your secrets</p>
-
-            <div class="video-deck-grid">
-                
-                <div class="interactive-polaroid-container" onclick="flipCard(this)">
-                    <div class="polaroid-card-inner">
-                        <div class="polaroid-front">
-                            <img src="pic3.jpg.jpg" alt="Memories Layer">
-                            <div class="card-label-text">Our Memories 📸</div>
-                        </div>
-                        <div class="polaroid-back">
-                            <div class="mini-photo-reel">
-                                <img src="pic1.jpg.jpg" alt="Thumb 1">
-                                <img src="pic4.jpg.jpg" alt="Thumb 2">
-                                <img src="pic5.jpg.jpg" alt="Thumb 3">
-                                <img src="pic6.jpg.jpg" alt="Thumb 4">
-                            </div>
-                        </div>
-                    </div>
+    <!-- STAGE SCREEN 3: HER EXPANDING HIDDEN LETTER SHEET -->
+    <div id="envelope-screen" class="stage-view">
+        <h2 style="font-family:'Dancing Script', cursive; font-size:3.2rem; color:#4a0d17;">You Have Mail! ✉️</h2>
+        <div class="envelope-wrapper" id="mail-envelope" onclick="openEnvelope()">
+            <div class="letter-content-sheet">
+                <div class="letter-text-area">
+                    <h3 style="font-family:'Dancing Script', cursive; font-size:1.8rem; color:#bc263d; margin-bottom:10px;">To My Favorite Girl,</h3>
+                    Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. <br><br>
+                    I hate that I can’t be there to take you out, hold your hand, or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter, even from thousands of miles away.<br><br>
+                    I hope your day is as beautiful as you are. I love you more than words can say. Happy birthday, my beautiful girl. 💖<br><br>
+                    Happy Birthday, beautiful! I’m sending you the biggest virtual hug until I can give you a real one. Today is all about you, which means you get a total pass and I promise to be on my best behavior for at least 24 hours. Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. I can't wait to see you soon. 😘❤️
+                    <br><br>
+                    <span style="font-family:'Dancing Script', cursive; font-size:1.4rem; color:#bc263d; display:block; text-align:right; font-weight:bold;">With love, Santosh</span>
                 </div>
-
-                <div class="interactive-polaroid-container" onclick="flipCard(this)">
-                    <div class="polaroid-card-inner">
-                        <div class="polaroid-front">
-                            <img src="pic4.jpg.jpg" alt="Music Layer">
-                            <div class="card-label-text">Your Track 🎵</div>
-                        </div>
-                        <div class="polaroid-back">
-                            <div class="spotify-embed-card">
-                                <div style="font-size: 2.2rem;">🎵</div>
-                                <h4>golden hour</h4>
-                                <p>JVKE</p>
-                                <a href="https://open.spotify.com/track/6Uelw0gGlmZas066gZ2g6m" target="_blank" class="spotify-link-btn">PLAY NOW</a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="letter-photo-side">
+                    <div class="mini-polaroid"><img src="pic3.jpg.jpg"></div>
+                    <div class="mini-polaroid"><img src="pic4.jpg.jpg"></div>
                 </div>
-
-                <div class="interactive-polaroid-container" onclick="flipCard(this)">
-                    <div class="polaroid-card-inner">
-                        <div class="polaroid-front">
-                            <img src="pic5.jpg.jpg" alt="Letter Layer">
-                            <div class="card-label-text">The Letter ✉️</div>
-                        </div>
-                        <div class="polaroid-back">
-                            <div class="letter-preview-box">
-                                <strong>To My Favorite Girl,</strong><br><br>
-                                Happy Birthday to my favorite person in the entire world. Even though there are miles between us right now, you know you’re always right here with me. 
-                                <br><br>
-                                I hate that I can’t be there to hold your hand or see your smile in person today, but I’m counting down the days until we don't have to say goodbye at airports anymore. You make every single day brighter.
-                                <br><br>
-                                Distance really means nothing when someone means everything, and you mean the world to me. Have the best day ever, my love. 
-                                <br><br>
-                                <span style="font-family:'Dancing Script', cursive; font-size:1.4rem; color:#ff7597; display:block; text-align:right;">With love, Santosh</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+            <div class="envelope-body"></div>
+            <div class="wax-seal">❤️</div>
+        </div>
+        <button class="next-stage-btn" onclick="goToCakeStage()">Next Surprise! 👉</button>
+    </div>
+
+    <!-- STAGE SCREEN 4: INTERACTIVE BLOW WISH GATEWAY -->
+    <div id="cake-screen" class="stage-view">
+        <canvas id="fireworks-canvas"></canvas>
+        <div class="cake-headline" id="wish-title">Make a Wish! ✨</div>
+        
+        <div class="birthday-cake-element" id="interactive-cake" onclick="blowCandles()">
+            <div class="candles-row">
+                <div class="candle-stick"><div class="candle-flame"></div></div>
+                <div class="candle-stick"><div class="candle-flame"></div></div>
+                <div class="candle-stick"><div class="candle-flame"></div></div>
+            </div>
+            <div class="cake-cream-topping"></div>
         </div>
     </div>
 
 
+    <!-- CONTROLLER SYSTEM APPLICATION LOGIC -->
     <script>
-        const KEY_CODE = "1306";
-        let currentSequence = "";
+        const PIN_KEY = "1306"; // Her birthday code entry gate
+        let enteredPin = "";
 
-        function pressNumber(num) {
-            const dotNodes = document.querySelectorAll('.dot');
-            const systemMsg = document.getElementById('lock-message');
-            
+        // Screen 1: Pin Entry Mechanics 
+        function tapKey(num) {
+            const dots = document.querySelectorAll('.dot');
+            const msg = document.getElementById('lock-message');
+
             if (num === '✖') {
-                currentSequence = "";
-                dotNodes.forEach(dot => dot.classList.remove('active', 'error'));
-                systemMsg.innerText = "Enter Passcode";
+                enteredPin = "";
+                dots.forEach(d => d.classList.remove('active', 'error'));
+                msg.innerText = "Enter Passcode";
                 return;
             }
 
-            if (currentSequence.length >= 4) return;
+            if (enteredPin.length >= 4) return;
+            enteredPin += num;
+            dots[enteredPin.length - 1].classList.add('active');
 
-            currentSequence += num;
-            dotNodes[currentSequence.length - 1].classList.add('active');
-
-            if (currentSequence.length === 4) {
-                if (currentSequence === KEY_CODE) {
-                    setTimeout(() => {
-                        document.getElementById('lock-screen').classList.add('unlocked');
-                        document.body.classList.add('show-content');
-                    }, 220);
+            if (enteredPin.length === 4) {
+                if (enteredPin === PIN_KEY) {
+                    setTimeout(() => switchStage('lock-screen', 'loading-screen', startLoadingAnimation), 300);
                 } else {
                     setTimeout(() => {
-                        dotNodes.forEach(dot => dot.classList.add('error'));
-                        systemMsg.innerText = "Incorrect Pin";
-                        setTimeout(() => pressNumber('✖'), 750);
-                    }, 180);
+                        dots.forEach(d => d.classList.add('error'));
+                        msg.innerText = "Incorrect Pin";
+                        setTimeout(() => tapKey('✖'), 800);
+                    }, 200);
                 }
             }
         }
 
-        // Card flipper logic matching the clean video interaction trigger click
-        function flipCard(cardElement) {
-            cardElement.classList.toggle('flipped');
+        // Global Transition Control Router
+        function switchStage(currentId, nextId, callback = null) {
+            const current = document.getElementById(currentId);
+            const next = document.getElementById(nextId);
+            
+            current.style.opacity = "0";
+            setTimeout(() => {
+                current.classList.remove('active');
+                next.classList.add('active');
+                setTimeout(() => {
+                    next.style.opacity = "1";
+                    if (callback) callback();
+                }, 50);
+            }, 600);
         }
 
-        // Sparkle Engine Background Initialization
-        const canvasBg = document.getElementById('starfield');
-        for (let i = 0; i < 55; i++) {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.width = Math.random() * 2.5 + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.backgroundColor = '#ffffff';
-            particle.style.borderRadius = '50%';
-            particle.style.opacity = Math.random() * 0.6;
-            canvasBg.appendChild(particle);
+        // Screen 2: Progress Loading Bar Simulation Logic
+        function startLoadingAnimation() {
+            const fill = document.getElementById('loading-fill');
+            setTimeout(() => {
+                fill.style.width = "100%";
+                setTimeout(() => {
+                    switchStage('loading-screen', 'envelope-screen');
+                }, 3600); // Transitions automatically right as bar finishes
+            }, 100);
+        }
+
+        // Screen 3: Mail Click Envelope Expansion Trigger
+        function openEnvelope() {
+            document.getElementById('mail-envelope').classList.add('opened');
+        }
+
+        function goToCakeStage() {
+            switchStage('envelope-screen', 'cake-screen', initFireworksEngine);
+        }
+
+        // Screen 4: Candle Action and Custom Text Swap 
+        function blowCandles() {
+            const cake = document.getElementById('interactive-cake');
+            if (cake.classList.contains('blown')) return;
+
+            cake.classList.add('blown');
+            document.getElementById('wish-title').innerHTML = "Happy Birthday to You! 🎉❤️";
+            triggerExplosionEffect();
+        }
+
+        // High Fidelity Canvas Burst Particle System
+        let canvas, ctx, animationFrameId;
+        let particlesArray = [];
+
+        function initFireworksEngine() {
+            canvas = document.getElementById('fireworks-canvas');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        function resizeCanvas() {
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        }
+
+        class FireworkParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.radius = Math.random() * 3 + 1;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.gravity = 0.05;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.alpha -= 0.012;
+            }
+        }
+
+        function triggerExplosionEffect() {
+            const colors = ['#ff7597', '#ffd700', '#00f5d4', '#7b2cbf', '#ff9f1c'];
+            
+            // Generate multiple burst centers across viewport
+            for (let b = 0; b < 5; b++) {
+                setTimeout(() => {
+                    const centerX = Math.random() * canvas.width;
+                    const centerY = Math.random() * (canvas.height * 0.6) + 100;
+                    const randColor = colors[Math.floor(Math.random() * colors.length)];
+                    for (let i = 0; i < 60; i++) {
+                        particlesArray.push(new FireworkParticle(centerX, centerY, randColor));
+                    }
+                }, b * 300);
+            }
+            
+            if (!animationFrameId) renderEngineLoop();
+        }
+
+        function renderEngineLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particlesArray.length - 1; i >= 0; i--) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].alpha <= 0) {
+                    particlesArray.splice(i, 1);
+                }
+            }
+            animationFrameId = requestAnimationFrame(renderEngineLoop);
         }
     </script>
 </body>
